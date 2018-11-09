@@ -1,5 +1,7 @@
 public abstract class Robot {
-
+    private Case position;
+    private int capacite;
+    private double velocidade;
 
     public Case getPosition() {
         return null;
