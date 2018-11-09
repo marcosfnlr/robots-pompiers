@@ -5,9 +5,11 @@ public class Carte {
     private int nbColonnes;
     private int tailleCases;
 
-    public Carte(int nbLignes, int nbColonnes) {
+    public Carte(int nbLignes, int nbColonnes, int tailleCases) {
         this.nbLignes = nbLignes;
         this.nbColonnes = nbColonnes;
+        this.tailleCases = tailleCases;
+        this.cases = new Case[nbLignes*nbColonnes];
     }
 
     public int getNbLignes() {
