@@ -1,4 +1,6 @@
 package simulation.robot;
+
+import simulation.Simulateur;
 import simulation.carte.Carte;
 import simulation.carte.Case;
 import simulation.carte.Incendie;
@@ -6,18 +8,29 @@ import simulation.carte.NatureTerrain;
 import simulation.evenement.Direction;
 
 public abstract class Robot {
-	
+
+	private Simulateur simulateur;
 	private Case position;
 	private double vitesse;
 	private int reservoir;
 	private int tempsRemplissage; // temps pour remplir tout le reservoir en secondes
-	private double vitesseIntervention; // litres per secondes 
-	
-	public Robot (Case position, double vitesse) {
+	private double vitesseIntervention; // litres per secondes
+
+	public Robot(Case position, double vitesse) {
 		this.position = position;
 		this.vitesse = vitesse;
+		this.simulateur = null;
+
 	}
-	
+
+	public Simulateur getSimulateur() {
+		return simulateur;
+	}
+
+	public void setSimulateur(Simulateur simulateur) {
+		this.simulateur = simulateur;
+	}
+
 	public int getTempsRemplissage() {
 		return this.tempsRemplissage;
 	}
@@ -42,40 +55,44 @@ public abstract class Robot {
 		this.reservoir = reservoir;
 	}
 
-    public Case getPosition() {
-    	return this.position;
-    }
+	public Case getPosition() {
+		return this.position;
+	}
 
-    public void setPosition(Case pos) {
-    	this.position = pos;
-    }
-    
-    public double getVitesse() {
+	public void setPosition(Case pos) {
+		this.position = pos;
+	}
+
+	public double getVitesse() {
 		return this.vitesse;
 	}
 
-    public abstract double getVitesse(NatureTerrain terrain);
+	public abstract double getVitesse(NatureTerrain terrain);
 
-    public void deverserEau(int vol, Incendie incendie) {
-    	this.reservoir -= vol;
-    	incendie.setLitres(incendie.getLitres() - vol);
-    }
+	public void deverserEau(int vol, Incendie incendie) {
+		this.reservoir -= vol;
+		incendie.setLitres(incendie.getLitres() - vol);
+	}
 
-    //public abstract void remplirReservoir();
-    public void remplirReservoir(Carte carte) {
-    	Case position = this.getPosition();
-    	
-    	Case voisin = carte.getVoisin(position, Direction.NORD);
-    	if(voisin.getNature() == NatureTerrain.EAU) this.setReservoir(5000);
-    	
-    	voisin = carte.getVoisin(position, Direction.SUD);
-    	if(voisin.getNature() == NatureTerrain.EAU) this.setReservoir(5000);
-    	
-    	voisin = carte.getVoisin(position, Direction.EST);
-    	if(voisin.getNature() == NatureTerrain.EAU) this.setReservoir(5000);
-    	
-    	voisin = carte.getVoisin(position, Direction.OUEST);
-    	if(voisin.getNature() == NatureTerrain.EAU) this.setReservoir(5000);
-    	
-    }
+	// public abstract void remplirReservoir();
+	public void remplirReservoir(Carte carte) {
+		Case position = this.getPosition();
+
+		Case voisin = carte.getVoisin(position, Direction.NORD);
+		if (voisin.getNature() == NatureTerrain.EAU)
+			this.setReservoir(5000);
+
+		voisin = carte.getVoisin(position, Direction.SUD);
+		if (voisin.getNature() == NatureTerrain.EAU)
+			this.setReservoir(5000);
+
+		voisin = carte.getVoisin(position, Direction.EST);
+		if (voisin.getNature() == NatureTerrain.EAU)
+			this.setReservoir(5000);
+
+		voisin = carte.getVoisin(position, Direction.OUEST);
+		if (voisin.getNature() == NatureTerrain.EAU)
+			this.setReservoir(5000);
+
+	}
 }
