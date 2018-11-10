@@ -1,5 +1,5 @@
 
-public class Evenement {
+public abstract class Evenement {
 	private long date;
 	
 	Evenement (long date) {
@@ -10,7 +10,5 @@ public class Evenement {
 		return this.date;
 	}
 	
-	public void execute() {
-		
-	}
+	public abstract void execute();
 }

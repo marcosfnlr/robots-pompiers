@@ -16,9 +16,9 @@ public class RobotsPompiers {
 
 			DonneesSimulation donneesSimulation = LecteurDonnees.lire(args[0]);
 			GUISimulator gui = new GUISimulator(
-					donneesSimulation.getCarte().getNbColonnes() * Simulador.PIXELS_PAR_CASE,
-					donneesSimulation.getCarte().getNbLignes() * Simulador.PIXELS_PAR_CASE, Color.WHITE);
-			Simulador invader = new Simulador(gui, donneesSimulation);
+					donneesSimulation.getCarte().getNbColonnes() * Simulateur.PIXELS_PAR_CASE,
+					donneesSimulation.getCarte().getNbLignes() * Simulateur.PIXELS_PAR_CASE, Color.WHITE);
+			Simulateur invader = new Simulateur(gui, donneesSimulation);
 		} catch (FileNotFoundException e) {
 			System.out.println("fichier " + args[0] + " inconnu ou illisible");
 		} catch (DataFormatException e) {
