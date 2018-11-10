@@ -18,8 +18,8 @@ public class Chenilles extends Terrestre {
 		else return this.getVitesse();
 	}
 
-	public void deverserEau(int vol, Incendie incendie) {
-    	super.deverserEau(vol, incendie);
+	public void deverserEau(int vol) {
+    	super.deverserEau(vol);
     }
 
     public void remplirReservoir(Carte carte) {
