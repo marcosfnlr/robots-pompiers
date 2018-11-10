@@ -1,25 +1,47 @@
 public abstract class Robot {
-    private Case position;
-    private int capacite;
-    private double velocidade;
+	
+	private Case position;
+	private double vitesse;
+	private int reservoir;
+	private int minRemplissage;
+	private int secIntervention;
+	
+	public int getMinRemplissage() {
+		return minRemplissage;
+	}
+
+	public void setMinRemplissage(int minRemplissage) {
+		this.minRemplissage = minRemplissage;
+	}
+
+	public Robot (Case position, double vitesse) {
+		this.position = position;
+		this.vitesse = vitesse;
+	}
+
+	public int getReservoir() {
+		return reservoir;
+	}
+
+	public void setReservoir(int reservoir) {
+		this.reservoir = reservoir;
+	}
 
     public Case getPosition() {
-        return null;
+    	return this.position;
     }
 
     public void setPosition(Case pos) {
-
+    	this.position = pos;
     }
+    
+    public double getVitesse() {
+		return this.vitesse;
+	}
 
-    public double getVitesse(NatureTerrain terrain) {
-        return 0;
-    }
+    public abstract double getVitesse(NatureTerrain terrain);
 
-    public void deveserEau(int vol) {
+    public abstract void deverserEau(int vol);
 
-    }
-
-    public void remplirReservoir() {
-
-    }
+    public abstract void remplirReservoir();
 }
