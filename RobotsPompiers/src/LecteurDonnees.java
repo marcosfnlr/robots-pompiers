@@ -90,7 +90,6 @@ public class LecteurDonnees {
 	private Case lireCase(int lig, int col) throws DataFormatException {
 		ignorerCommentaires();
 		Case c;
-		System.out.print("Case (" + lig + "," + col + "): ");
 		String chaineNature = new String();
 
 		try {
