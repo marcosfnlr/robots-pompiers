@@ -5,19 +5,12 @@ public class Carte {
 	private int nbColonnes;
 	private int tailleCases;
 
-<<<<<<< HEAD
 	public Carte(int nbLignes, int nbColonnes, int tailleCases) {
 		this.nbLignes = nbLignes;
 		this.nbColonnes = nbColonnes;
 		this.tailleCases = tailleCases;
 		this.cases = new Case[nbLignes * nbColonnes];
 	}
-=======
-    public Carte(int nbLignes, int nbColonnes) {
-        this.nbLignes = nbLignes;
-        this.nbColonnes = nbColonnes;
-    }
->>>>>>> branch 'master' of https://github.com/marcosfnlr/robots-pompiers.git
 
 	public int getNbLignes() {
 		return nbLignes;
@@ -31,12 +24,7 @@ public class Carte {
 		return tailleCases;
 	}
 
-<<<<<<< HEAD
-	public Case getVoisin(Case src, Direction dir) {
-		return null;
-	}
-=======
-    public Case getVoisin(Case src, Direction dir){
+	public Case getVoisin(Case src, Direction dir){
     	int lin = src.getLigne();
         int col = src.getColonne();
     	if(this.voisinExiste(src, dir)) {
@@ -54,28 +42,16 @@ public class Carte {
     	}
     	else return null;
     }
->>>>>>> branch 'master' of https://github.com/marcosfnlr/robots-pompiers.git
 
-<<<<<<< HEAD
 	public Case getCase(int lin, int col) {
 		return cases[lin * nbColonnes + col];
 	}
-=======
-    public Case getCase(int lin, int col){
-        return cases[lin * this.getNbColonnes() + col];
-    }
->>>>>>> branch 'master' of https://github.com/marcosfnlr/robots-pompiers.git
 
-<<<<<<< HEAD
 	public void setCase(Case c) {
 		cases[c.getLigne() * nbColonnes + c.getColonne()] = c;
 	}
 
-	public boolean voisinExiste(Case src, Direction dir) {
-		return false;
-	}
-=======
-    public boolean voisinExiste(Case src, Direction dir){
+	public boolean voisinExiste(Case src, Direction dir){
         int ligne = src.getLigne();
         int colonne = src.getColonne();
         switch (dir) {
@@ -94,9 +70,4 @@ public class Carte {
         	default : return false;
         }
     }
->>>>>>> branch 'master' of https://github.com/marcosfnlr/robots-pompiers.git
 }
-
-
-
-
