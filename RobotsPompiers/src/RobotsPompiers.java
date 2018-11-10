@@ -3,38 +3,20 @@ import java.util.zip.DataFormatException;
 
 public class RobotsPompiers {
 
-	private Carte carte;
-	private Incendie[] incendies;
-	private Robot[] robots;
-
 	public static void main(String[] args) throws FileNotFoundException, DataFormatException {
-		RobotsPompiers robotsPompiers = new RobotsPompiers();
-		String file = "C:\\Users\\marco\\Desktop\\test.txt";
-		LecteurDonnees.lire(file, robotsPompiers);
-	}
+		if (args.length < 1) {
+			System.out.println("Syntaxe: java TestLecteurDonnees <nomDeFichier>");
+			System.exit(1);
+		}
 
-	public Carte getCarte() {
-		return carte;
-	}
+		try {
+			DonneesSimulation donneesSimulation = LecteurDonnees.lire(args[0]);
+		} catch (FileNotFoundException e) {
+			System.out.println("fichier " + args[0] + " inconnu ou illisible");
+		} catch (DataFormatException e) {
+			System.out.println("\n\t**format du fichier " + args[0] + " invalide: " + e.getMessage());
+		}
 
-	public void setCarte(Carte carte) {
-		this.carte = carte;
-	}
-
-	public Incendie[] getIncendies() {
-		return incendies;
-	}
-
-	public void setIncendies(Incendie[] incendies) {
-		this.incendies = incendies;
-	}
-
-	public Robot[] getRobots() {
-		return robots;
-	}
-
-	public void setRobots(Robot[] robots) {
-		this.robots = robots;
 	}
 
 }
