@@ -21,6 +21,10 @@ public class Carte {
     public int getTailleCases() {
         return tailleCases;
     }
+    
+    public Case getCase(int lin, int col){
+        return cases[lin * this.getNbColonnes() + col];
+    }
 
     public Case getVoisin(Case src, Direction dir){
     	int lin = src.getLigne();
@@ -39,10 +43,6 @@ public class Carte {
     		}
     	}
     	else return null;
-    }
-
-    public Case getCase(int lin, int col){
-        return cases[lin * this.getNbColonnes() + col];
     }
 
     public boolean voisinExiste(Case src, Direction dir){

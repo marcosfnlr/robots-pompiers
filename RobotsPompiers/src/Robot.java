@@ -3,24 +3,32 @@ public abstract class Robot {
 	private Case position;
 	private double vitesse;
 	private int reservoir;
-	private int minRemplissage;
-	private int secIntervention;
+	private int tempsRemplissage; // temps pour remplir tout le reservoir en secondes
+	private double vitesseIntervention; // litres per secondes 
 	
-	public int getMinRemplissage() {
-		return minRemplissage;
-	}
-
-	public void setMinRemplissage(int minRemplissage) {
-		this.minRemplissage = minRemplissage;
-	}
-
 	public Robot (Case position, double vitesse) {
 		this.position = position;
 		this.vitesse = vitesse;
 	}
+	
+	public int getTempsRemplissage() {
+		return this.tempsRemplissage;
+	}
+
+	public void setTempsRemplissage(int tempsRemplissage) {
+		this.tempsRemplissage = tempsRemplissage;
+	}
+
+	public double getVitesseIntervention() {
+		return vitesseIntervention;
+	}
+
+	public void setVitesseIntervention(double vitesseIntervention) {
+		this.vitesseIntervention = vitesseIntervention;
+	}
 
 	public int getReservoir() {
-		return reservoir;
+		return this.reservoir;
 	}
 
 	public void setReservoir(int reservoir) {
@@ -41,7 +49,26 @@ public abstract class Robot {
 
     public abstract double getVitesse(NatureTerrain terrain);
 
-    public abstract void deverserEau(int vol);
+    public void deverserEau(int vol, Incendie incendie) {
+    	this.reservoir -= vol;
+    	incendie.setLitres(incendie.getLitres() - vol);
+    }
 
-    public abstract void remplirReservoir();
+    //public abstract void remplirReservoir();
+    public void remplirReservoir(Carte carte) {
+    	Case position = this.getPosition();
+    	
+    	Case voisin = carte.getVoisin(position, Direction.NORD);
+    	if(voisin.getNature() == NatureTerrain.EAU) this.setReservoir(5000);
+    	
+    	voisin = carte.getVoisin(position, Direction.SUD);
+    	if(voisin.getNature() == NatureTerrain.EAU) this.setReservoir(5000);
+    	
+    	voisin = carte.getVoisin(position, Direction.EST);
+    	if(voisin.getNature() == NatureTerrain.EAU) this.setReservoir(5000);
+    	
+    	voisin = carte.getVoisin(position, Direction.OUEST);
+    	if(voisin.getNature() == NatureTerrain.EAU) this.setReservoir(5000);
+    	
+    }
 }

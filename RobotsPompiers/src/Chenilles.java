@@ -4,6 +4,8 @@ public class Chenilles extends Terrestre {
 	public Chenilles (Case position, double vitesse) {
 		super(position, 60);
 		this.setReservoir(2000);
+		this.setTempsRemplissage(5*60);
+		this.setVitesseIntervention(12.5);
 	}
 	
 	public double getVitesse(NatureTerrain terrain) {
@@ -11,12 +13,12 @@ public class Chenilles extends Terrestre {
 		else return this.getVitesse();
 	}
 
-    public void deverserEau(int vol) {
-    	
+	public void deverserEau(int vol, Incendie incendie) {
+    	super.deverserEau(vol, incendie);
     }
 
-    public void remplirReservoir() {
-    	
+    public void remplirReservoir(Carte carte) {
+    	super.remplirReservoir(carte);
     }
 
 }

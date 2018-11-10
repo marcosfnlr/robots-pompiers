@@ -3,7 +3,8 @@ public class Pattes extends Terrestre{
 	
 	public Pattes (Case position, double vitesse) {
 		super(position, vitesse);
-		//reservoir infini
+		//reservoir infini. ne necessite pas remplir
+		this.setVitesseIntervention(10);
 	}
 	
 	public double getVitesse(NatureTerrain terrain) {
@@ -11,12 +12,12 @@ public class Pattes extends Terrestre{
 		else return this.getVitesse();
 	}
 
-    public void deverserEau(int vol) {
-    	
+	public void deverserEau(int vol, Incendie incendie) {
+    	super.deverserEau(vol, incendie);
     }
 
-    public void remplirReservoir() {
-    	
+    public void remplirReservoir(Carte carte) {
+    	super.remplirReservoir(carte);
     }
 
 }

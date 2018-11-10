@@ -15,4 +15,8 @@ public class Incendie {
     public int getLitres() {
         return litres;
     }
+    
+    public void setLitres(int litres) {
+        this.litres = litres;
+    }
 }
