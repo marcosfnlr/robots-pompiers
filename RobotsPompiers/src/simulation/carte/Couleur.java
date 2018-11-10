@@ -1,3 +1,4 @@
+package simulation.carte;
 import java.awt.Color;
 
 public enum Couleur {

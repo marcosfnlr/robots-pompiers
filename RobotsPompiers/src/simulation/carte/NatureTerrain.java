@@ -1,3 +1,4 @@
+package simulation.carte;
 public enum NatureTerrain {
 	EAU(Couleur.BLUE), FORET(Couleur.GREEN), ROCHE(Couleur.BROWN), TERRAIN_LIBRE(Couleur.WHITE), HABITAT(
 			Couleur.PURPLE);

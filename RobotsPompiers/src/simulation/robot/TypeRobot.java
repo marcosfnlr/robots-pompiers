@@ -1,3 +1,4 @@
+package simulation.robot;
 
 public enum TypeRobot {
 	DRONE(100), CHENILLES(60), PATTES(30), ROUES(80);

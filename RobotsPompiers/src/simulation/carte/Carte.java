@@ -1,3 +1,6 @@
+package simulation.carte;
+import simulation.evenement.Direction;
+
 public class Carte {
 
 	private Case[] cases;

@@ -1,3 +1,8 @@
+package simulation.robot;
+import simulation.carte.Carte;
+import simulation.carte.Case;
+import simulation.carte.Incendie;
+import simulation.carte.NatureTerrain;
 
 public class Chenilles extends Terrestre {
 	

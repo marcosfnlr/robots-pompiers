@@ -1,3 +1,4 @@
+package simulation.evenement;
 
 public abstract class Evenement {
 	private long date;

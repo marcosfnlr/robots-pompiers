@@ -1,3 +1,4 @@
+package simulation;
 import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.util.zip.DataFormatException;

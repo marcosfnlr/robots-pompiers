@@ -1,3 +1,4 @@
+package simulation;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -6,6 +7,10 @@ import java.util.Iterator;
 import gui.GUISimulator;
 import gui.Rectangle;
 import gui.Simulable;
+import simulation.carte.Couleur;
+import simulation.carte.Incendie;
+import simulation.evenement.Evenement;
+import simulation.robot.Robot;
 
 public class Simulateur implements Simulable {
 

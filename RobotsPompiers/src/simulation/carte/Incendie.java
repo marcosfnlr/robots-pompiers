@@ -1,3 +1,4 @@
+package simulation.carte;
 public class Incendie {
 
     private Case position;

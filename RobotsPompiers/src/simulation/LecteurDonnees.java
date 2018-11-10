@@ -1,9 +1,21 @@
+package simulation;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.zip.DataFormatException;
+
+import simulation.carte.Carte;
+import simulation.carte.Case;
+import simulation.carte.Incendie;
+import simulation.carte.NatureTerrain;
+import simulation.robot.Chenilles;
+import simulation.robot.Drone;
+import simulation.robot.Pattes;
+import simulation.robot.Robot;
+import simulation.robot.Roues;
+import simulation.robot.TypeRobot;
 
 /**
  * Lecteur de cartes au format spectifié dans le sujet. Les données sur les

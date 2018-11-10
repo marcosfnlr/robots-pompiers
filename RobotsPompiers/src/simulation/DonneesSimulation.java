@@ -1,3 +1,8 @@
+package simulation;
+import simulation.carte.Carte;
+import simulation.carte.Incendie;
+import simulation.robot.Robot;
+
 public class DonneesSimulation {
 	private Carte carte;
 	private Incendie[] incendies;

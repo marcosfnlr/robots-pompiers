@@ -1,3 +1,4 @@
+package simulation.evenement;
 
 public class Deplacer extends Evenement{
 	Deplacer (long date) {

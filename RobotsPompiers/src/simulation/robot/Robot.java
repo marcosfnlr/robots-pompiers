@@ -1,3 +1,10 @@
+package simulation.robot;
+import simulation.carte.Carte;
+import simulation.carte.Case;
+import simulation.carte.Incendie;
+import simulation.carte.NatureTerrain;
+import simulation.evenement.Direction;
+
 public abstract class Robot {
 	
 	private Case position;
