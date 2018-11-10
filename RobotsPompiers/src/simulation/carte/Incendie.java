@@ -20,4 +20,8 @@ public class Incendie {
     public void setLitres(int litres) {
         this.litres = litres;
     }
+    
+    public void EteindreIncendie(int vol) {
+    	this.lites -= vol;
+    }
 }

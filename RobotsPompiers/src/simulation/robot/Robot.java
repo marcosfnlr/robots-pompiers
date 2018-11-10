@@ -56,9 +56,8 @@ public abstract class Robot {
 
     public abstract double getVitesse(NatureTerrain terrain);
 
-    public void deverserEau(int vol, Incendie incendie) {
+    public void deverserEau(int vol) {
     	this.reservoir -= vol;
-    	incendie.setLitres(incendie.getLitres() - vol);
     }
 
     //public abstract void remplirReservoir();
