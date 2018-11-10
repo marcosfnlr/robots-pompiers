@@ -3,7 +3,6 @@ package simulation.robot;
 import simulation.Simulateur;
 import simulation.carte.Carte;
 import simulation.carte.Case;
-import simulation.carte.Incendie;
 import simulation.carte.NatureTerrain;
 import simulation.evenement.Direction;
 
@@ -15,12 +14,25 @@ public abstract class Robot {
 	private int reservoir;
 	private int tempsRemplissage; // temps pour remplir tout le reservoir en secondes
 	private double vitesseIntervention; // litres per secondes
+	private EtatRobot etat;
 
 	public Robot(Case position, double vitesse) {
 		this.position = position;
 		this.vitesse = vitesse;
 		this.simulateur = null;
+		this.etat = EtatRobot.ARRETE;
+	}
 
+	public EtatRobot getEtat() {
+		return etat;
+	}
+
+	public void setEtat(EtatRobot etat) {
+		this.etat = etat;
+	}
+
+	public Carte getCarte() {
+		return simulateur.getDados().getCarte();
 	}
 
 	public Simulateur getSimulateur() {

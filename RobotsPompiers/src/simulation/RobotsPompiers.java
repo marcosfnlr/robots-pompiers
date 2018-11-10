@@ -1,9 +1,11 @@
 package simulation;
+
 import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.util.zip.DataFormatException;
 
 import gui.GUISimulator;
+import simulation.evenement.Deplacer;
 
 public class RobotsPompiers {
 
@@ -19,7 +21,9 @@ public class RobotsPompiers {
 			GUISimulator gui = new GUISimulator(
 					donneesSimulation.getCarte().getNbColonnes() * Simulateur.PIXELS_PAR_CASE,
 					donneesSimulation.getCarte().getNbLignes() * Simulateur.PIXELS_PAR_CASE, Color.WHITE);
-			Simulateur invader = new Simulateur(gui, donneesSimulation);
+			Simulateur simulateur = new Simulateur(gui, donneesSimulation);
+			simulateur.ajouteEvenement(
+					new Deplacer(1L, donneesSimulation.getRobots()[1], donneesSimulation.getCarte().getCase(5, 5)));
 		} catch (FileNotFoundException e) {
 			System.out.println("fichier " + args[0] + " inconnu ou illisible");
 		} catch (DataFormatException e) {
