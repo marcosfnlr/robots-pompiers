@@ -1,23 +1,26 @@
 public class Carte {
 
-    private Case[] cases;
-    private int nbLignes;
-    private int nbColonnes;
-    private int tailleCases;
+	private Case[] cases;
+	private int nbLignes;
+	private int nbColonnes;
+	private int tailleCases;
 
-    public Carte(int nbLignes, int nbColonnes) {
-        this.nbLignes = nbLignes;
-        this.nbColonnes = nbColonnes;
-    }
+	public Carte(int nbLignes, int nbColonnes, int tailleCases) {
+		this.nbLignes = nbLignes;
+		this.nbColonnes = nbColonnes;
+		this.tailleCases = tailleCases;
+		this.cases = new Case[nbLignes * nbColonnes];
+	}
 
-    public int getNbLignes() {
-        return nbLignes;
-    }
+	public int getNbLignes() {
+		return nbLignes;
+	}
 
-    public int getNbColonnes() {
-        return nbColonnes;
-    }
+	public int getNbColonnes() {
+		return nbColonnes;
+	}
 
+<<<<<<< HEAD
     public int getTailleCases() {
         return tailleCases;
     }
@@ -25,8 +28,13 @@ public class Carte {
     public Case getCase(int lin, int col){
         return cases[lin * this.getNbColonnes() + col];
     }
+=======
+	public int getTailleCases() {
+		return tailleCases;
+	}
+>>>>>>> branch 'master' of https://github.com/marcosfnlr/robots-pompiers.git
 
-    public Case getVoisin(Case src, Direction dir){
+	public Case getVoisin(Case src, Direction dir){
     	int lin = src.getLigne();
         int col = src.getColonne();
     	if(this.voisinExiste(src, dir)) {
@@ -45,7 +53,19 @@ public class Carte {
     	else return null;
     }
 
+<<<<<<< HEAD
     public boolean voisinExiste(Case src, Direction dir){
+=======
+	public Case getCase(int lin, int col) {
+		return cases[lin * nbColonnes + col];
+	}
+
+	public void setCase(Case c) {
+		cases[c.getLigne() * nbColonnes + c.getColonne()] = c;
+	}
+
+	public boolean voisinExiste(Case src, Direction dir){
+>>>>>>> branch 'master' of https://github.com/marcosfnlr/robots-pompiers.git
         int ligne = src.getLigne();
         int colonne = src.getColonne();
         switch (dir) {
@@ -65,7 +85,3 @@ public class Carte {
         }
     }
 }
-
-
-
-
