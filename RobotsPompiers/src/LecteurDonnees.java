@@ -1,5 +1,8 @@
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Locale;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 import java.util.zip.DataFormatException;
 
 /**
@@ -31,15 +34,13 @@ public class LecteurDonnees {
 	 * @param fichierDonnees
 	 *            nom du fichier à lire
 	 */
-	public static void lire(String fichierDonnees, RobotsPompiers robotsPompiers)
-			throws FileNotFoundException, DataFormatException {
-		System.out.println("\n == Lecture du fichier" + fichierDonnees);
+	public static DonneesSimulation lire(String fichierDonnees) throws FileNotFoundException, DataFormatException {
 		LecteurDonnees lecteur = new LecteurDonnees(fichierDonnees);
-		robotsPompiers.setCarte(lecteur.lireCarte());
-		robotsPompiers.setIncendies(lecteur.lireIncendies(robotsPompiers.getCarte()));
-		lecteur.lireRobots();
+		Carte carte = lecteur.lireCarte();
+		Incendie[] incendies = lecteur.lireIncendies(carte);
+		Robot[] robots = lecteur.lireRobots(carte);
 		scanner.close();
-		System.out.println("\n == Lecture terminee");
+		return new DonneesSimulation(carte, incendies, robots);
 	}
 
 	// Tout le reste de la classe est prive!
@@ -89,7 +90,6 @@ public class LecteurDonnees {
 	private Case lireCase(int lig, int col) throws DataFormatException {
 		ignorerCommentaires();
 		Case c;
-		System.out.print("Case (" + lig + "," + col + "): ");
 		String chaineNature = new String();
 
 		try {
@@ -149,14 +149,14 @@ public class LecteurDonnees {
 	/**
 	 * Lit et affiche les donnees des robots.
 	 */
-	private Robot[] lireRobots() throws DataFormatException {
+	private Robot[] lireRobots(Carte carte) throws DataFormatException {
 		ignorerCommentaires();
 		Robot[] robots;
 		try {
 			int nbRobots = scanner.nextInt();
-			robots =  new Robot[nbRobots];
+			robots = new Robot[nbRobots];
 			for (int i = 0; i < nbRobots; i++) {
-				robots[i] = lireRobot(i);
+				robots[i] = lireRobot(i, carte);
 			}
 
 		} catch (NoSuchElementException e) {
@@ -170,32 +170,55 @@ public class LecteurDonnees {
 	 * 
 	 * @param i
 	 */
-	private Robot lireRobot(int i) throws DataFormatException {
+	private Robot lireRobot(int i, Carte carte) throws DataFormatException {
 		ignorerCommentaires();
-		Robot robot = null;
+		Robot robot;
 
 		try {
 			int lig = scanner.nextInt();
 			int col = scanner.nextInt();
-			System.out.print("position = (" + lig + "," + col + ");");
 			String type = scanner.next();
+			TypeRobot typeRobot = TypeRobot.valueOf(type);
 
-			System.out.print("\t type = " + type);
-
-			// lecture eventuelle d'une vitesse du robot (entier)
-			System.out.print("; \t vitesse = ");
-			String s = scanner.findInLine("(\\d+)"); // 1 or more digit(s) ?
-			// pour lire un flottant: ("(\\d+(\\.\\d+)?)");
-
+			String s = scanner.findInLine("(\\d+(\\.\\d+)?)"); // 1 or more digit(s) ?
+			Case c = carte.getCase(lig, col);
 			if (s == null) {
-				System.out.print("valeur par defaut");
+				switch (typeRobot) {
+				case DRONE:
+					robot = new Drone(c, TypeRobot.DRONE.getVitesse());
+					break;
+				case CHENILLES:
+					robot = new Chenilles(c, TypeRobot.DRONE.getVitesse());
+					break;
+				case PATTES:
+					robot = new Pattes(c, TypeRobot.DRONE.getVitesse());
+					break;
+				case ROUES:
+					robot = new Roues(c, TypeRobot.DRONE.getVitesse());
+					break;
+				default:
+					throw new DataFormatException("Type robot invalide. ");
+				}
 			} else {
-				int vitesse = Integer.parseInt(s);
-				System.out.print(vitesse);
+				double vitesse = Double.parseDouble(s);
+				switch (typeRobot) {
+				case DRONE:
+					robot = new Drone(c, vitesse);
+					break;
+				case CHENILLES:
+					robot = new Chenilles(c, vitesse);
+					break;
+				case PATTES:
+					robot = new Pattes(c, vitesse);
+					break;
+				case ROUES:
+					robot = new Roues(c, vitesse);
+					break;
+				default:
+					throw new DataFormatException("Type robot invalide. ");
+				}
 			}
 			verifieLigneTerminee();
-
-			System.out.println();
 
 		} catch (NoSuchElementException e) {
 			throw new DataFormatException(
