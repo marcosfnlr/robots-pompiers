@@ -188,13 +188,13 @@ public class LecteurDonnees {
 					robot = new Drone(c, TypeRobot.DRONE.getVitesse());
 					break;
 				case CHENILLES:
-					robot = new Chenilles(c, TypeRobot.DRONE.getVitesse());
+					robot = new Chenilles(c, TypeRobot.CHENILLES.getVitesse());
 					break;
 				case PATTES:
-					robot = new Pattes(c, TypeRobot.DRONE.getVitesse());
+					robot = new Pattes(c, TypeRobot.PATTES.getVitesse());
 					break;
 				case ROUES:
-					robot = new Roues(c, TypeRobot.DRONE.getVitesse());
+					robot = new Roues(c, TypeRobot.ROUES.getVitesse());
 					break;
 				default:
 					throw new DataFormatException("Type robot invalide. ");

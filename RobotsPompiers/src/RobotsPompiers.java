@@ -1,5 +1,8 @@
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.util.zip.DataFormatException;
+
+import gui.GUISimulator;
 
 public class RobotsPompiers {
 
@@ -10,11 +13,19 @@ public class RobotsPompiers {
 		}
 
 		try {
+
 			DonneesSimulation donneesSimulation = LecteurDonnees.lire(args[0]);
+			GUISimulator gui = new GUISimulator(
+					donneesSimulation.getCarte().getNbColonnes() * Simulador.PIXELS_PAR_CASE,
+					donneesSimulation.getCarte().getNbLignes() * Simulador.PIXELS_PAR_CASE, Color.WHITE);
+			Simulador invader = new Simulador(gui, donneesSimulation);
 		} catch (FileNotFoundException e) {
 			System.out.println("fichier " + args[0] + " inconnu ou illisible");
 		} catch (DataFormatException e) {
 			System.out.println("\n\t**format du fichier " + args[0] + " invalide: " + e.getMessage());
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
 		}
 
 	}

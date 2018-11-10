@@ -25,18 +25,18 @@ public class Carte {
 	}
 
 	public Case getVoisin(Case src, Direction dir) {
-		int lin = src.getLigne();
+		int lig = src.getLigne();
 		int col = src.getColonne();
 		if (this.voisinExiste(src, dir)) {
 			switch (dir) {
 			case NORD:
-				return this.getCase(lin - 1, col);
+				return this.getCase(lig - 1, col);
 			case SUD:
-				return this.getCase(lin + 1, col);
+				return this.getCase(lig + 1, col);
 			case EST:
-				return this.getCase(lin, col + 1);
+				return this.getCase(lig, col + 1);
 			case OUEST:
-				return this.getCase(lin, col - 1);
+				return this.getCase(lig, col - 1);
 			default:
 				return null;
 			}
@@ -44,8 +44,8 @@ public class Carte {
 			return null;
 	}
 
-	public Case getCase(int lin, int col) {
-		return cases[lin * nbColonnes + col];
+	public Case getCase(int lig, int col) {
+		return cases[lig * nbColonnes + col];
 	}
 
 	public void setCase(Case c) {
