@@ -28,7 +28,7 @@ public class PathCalculator {
 
 		PriorityQueue<PairDoubleCase> pq = new PriorityQueue<>(PairDoubleCaseComparator);
 		dist.put(src, 0);
-		pq.add(new Pair(0, src));
+		pq.add(new PairDoubleCase(0, src));
 
 		while (!pq.isEmpty()){
 			PairDoubleCase par = pq.poll();
