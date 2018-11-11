@@ -1,79 +1,84 @@
-import java.util.Comparator;
+package simulation;
 import java.util.PriorityQueue;
+import java.util.Collections;
+import simulation.carte.Carte;
+import simulation.robot.Robot;
+import simulation.carte.Case;
+import simulation.evenement.Direction;
 
 public class PathCalculator {
     
-	public static List<Node> calculate(Carte carte, Robot robot, Case src){
+	public static List<Case> calculate(Carte carte, Robot robot, Case dest){
 
-		PathCalculator pc = new PathCalculator(carte, robot, src);
+		PathCalculator pathCalculator = new PathCalculator(carte, robot, dest);
 
-		Node source = new Node(src);
-		source.distance = 0;
+		Map<Case, Double> dist = new HashMap<Case, Double>();
 
-		Set<Node> settledNodes = new HashSet<>();
-	    Set<Node> unsettledNodes = new HashSet<>();
-	 
-	    unsettledNodes.add(source);
-	 
-	    while (unsettledNodes.size() != 0) {
-	        Node currentNode = getLowestDistanceNode(unsettledNodes);
-	        unsettledNodes.remove(currentNode);
+		for(Case x : carte.getCases()){
+			dist.put(x, Double.MAX_VALUE);
+		}	
 
-	        Double edgeWeight = pc.WeightCalculator(currentNode.position);
+		Comparator<PairDoubleCase> PairDoubleCaseComparator = new Comparator<PairDoubleCase>(){
+			@Override
+			public int compare(PairDoubleCase p1, PairDoubleCase p2){
+				return Double.compare(p1.getKey(), p2.getKey());
+			}
+		};
+		Case src = robot.getPosition();
 
-	        Node norte = carte.getVoisin(currentNode.position, NORD);
-	        Node sul = carte.getVoisin(currentNode.position, SUD);
-	        Node leste = carte.getVoisin(currentNode.position, EST);
-	        Node oeste = carte.getVoisin(currentNode.position, OUEST);
+		PriorityQueue<PairDoubleCase> pq = new PriorityQueue<>(PairDoubleCaseComparator);
+		dist[src] = 0;
+		pq.add(new Pair(0, src));
 
-	        if (norte != null && !settledNodes.contains(norte)){
-	        	calculateMinimumDistance(norte, edgeWeight, currentNode);
-                unsettledNodes.add(norte);
-	        }
-	        if (sul != null && !settledNodes.contains(sul)){
-	        	calculateMinimumDistance(sul, edgeWeight, currentNode);
-                unsettledNodes.add(sul);
-	        }
-	        if (leste != null && !settledNodes.contains(leste)){
-	        	calculateMinimumDistance(leste, edgeWeight, currentNode);
-                unsettledNodes.add(leste);
-	        }
-	        if (oeste != null && !settledNodes.contains(oeste)){
-	        	calculateMinimumDistance(oeste, edgeWeight, currentNode);
-                unsettledNodes.add(oeste);
-	        }
-	        settledNodes.add(currentNode);
+		while (!pq.isEmpty()){
+			PairDoubleCase par = pq.poll();
+			Case u = par.getValue();
+			Double d = par.getKey();
 
+			if(d > dist[u]) continue;
+
+			for(Direction dir : Direction.values()){
+				Case v = carte.getVoisin(u, dir);
+				if(v == null) continue;
+				Double peso = pathCalculator.WeightCalculator(u);
+				if(dist[u] + peso < dist[v]){
+                    dist[v] = dist[u] + peso;
+                    pq.add(new Pair(dist[v], v));
+                }
+			}
+		}
+
+		if(dist[dest] == Double.MAX_VALUE) return null;
+		LinkedList<Case> lista = new LinkedList<Case>();
+		Case currentCase = dest;
+		while(currentCase != src){
+			lista.add(currentCase);
+			for(Direction dir : Direction.values()){
+				Case v = carte.getVoisin(currentCase, dir);
+				if(v == null) continue;
+				Double peso = pathCalculator.WeightCalculator(currentCase);
+				if(dist[currentCase] - peso == dist[v]){
+					currentCase = v;
+					break;
+				}
+			}
+		}
+		Collections.reverse(lista);
+		return lista;
 	}
-
-
-	private class Node {
-     
-	    private Case position;
-	     
-	    private List<Node> shortestPath = new LinkedList<>();
-	     
-	    private Double distance = Double.MAX_VALUE;
-	     
-	    private Node(Case position) {
-	        this.position = position;
-	    }
-	}
-
 
 
 	private Carte carte;
 	private Robot robot;
-	private Case source;
+	private Case dest;
 
-    private PathCalculator(Carte carte, Robot robot, Case source){
+    private PathCalculator(Carte carte, Robot robot, Case dest){
     	this.carte = carte;
     	this.robot = robot;
-    	this.source = source;
+    	this.dest = dest;
     }
 
     private double WeightCalculator(Case position){
     	return this.robot.getVitesse(position.getNature())/this.carte.getTailleCases();
     }
-
 }

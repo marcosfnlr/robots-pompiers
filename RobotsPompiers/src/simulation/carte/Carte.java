@@ -51,6 +51,10 @@ public class Carte {
 		return cases[lig * nbColonnes + col];
 	}
 
+    public Case[] getCases() {
+		return cases;
+	}
+
 	public void setCase(Case c) {
 		cases[c.getLigne() * nbColonnes + c.getColonne()] = c;
 	}
