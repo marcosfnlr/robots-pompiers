@@ -27,7 +27,7 @@ public class PathCalculator {
 		Case src = robot.getPosition();
 
 		PriorityQueue<PairDoubleCase> pq = new PriorityQueue<>(PairDoubleCaseComparator);
-		dist[src] = 0;
+		dist.put(src, 0);
 		pq.add(new Pair(0, src));
 
 		while (!pq.isEmpty()){
