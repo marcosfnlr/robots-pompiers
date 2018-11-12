@@ -64,12 +64,12 @@ public class PathCalculator {
 		if(dist.get(dest) == Double.MAX_VALUE) return null;
 		LinkedList<Case> lista = new LinkedList<Case>();
 		Case currentCase = dest;
-		while(currentCase != src){
+		while(!currentCase.equals(src)){
 			lista.add(currentCase);
 			for(Direction dir : Direction.values()){
 				Case v = carte.getVoisin(currentCase, dir);
 				if(v == null) continue;
-				Double peso = pathCalculator.WeightCalculator(currentCase);
+				Double peso = pathCalculator.WeightCalculator(v);
 				if(dist.get(currentCase) - peso == dist.get(v)){
 					currentCase = v;
 					break;

@@ -8,6 +8,7 @@ import simulation.carte.NatureTerrain;
 import simulation.evenement.Deplacer;
 import simulation.evenement.Direction;
 import simulation.evenement.Evenement;
+import simulation.evenement.Intervenir;
 import simulation.evenement.action.Action;
 import simulation.evenement.action.Deplacement;
 
@@ -48,12 +49,19 @@ public abstract class Robot {
 		if (evenement instanceof Deplacer) {
 			addDeplacement((Deplacer) evenement);
 		}
+		if (evenement instanceof Intervenir) {
+			addIntervention((Intervenir) evenement);
+		}
 	}
 
 	private void addDeplacement(Deplacer deplacer) {
 		Direction direction = Direction.getDirection(position, deplacer.getDestination());
 		long dateFinal = deplacer.getDateDebut() + getCarte().getTailleCases() / getVitesse(this.position.getNature());
 		this.actionCourrent = new Deplacement(direction, deplacer.getDateDebut(), dateFinal);
+	}
+	
+	private void addIntervention(Intervenir intervenir) {
+		
 	}
 
 	public EtatRobot getEtat() {
