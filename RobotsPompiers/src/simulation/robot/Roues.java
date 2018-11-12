@@ -1,46 +1,35 @@
 package simulation.robot;
-import simulation.carte.Carte;
-import simulation.carte.Case;
-import simulation.carte.Incendie;
-import simulation.carte.NatureTerrain;
-import simulation.evenement.Direction;
 
-public class Roues extends Terrestre{
-	
-	public Roues (Case position, double vitesse) {
-		super(position, 80);
-		this.setReservoir(5000);
-		this.setTempsRemplissage(10*60);
-		this.setVitesseIntervention(20);
+import simulation.carte.Case;
+import simulation.carte.NatureTerrain;
+
+public class Roues extends Terrestre {
+
+	public Roues(Case position) {
+		super(position, TypeRobot.ROUES);
 	}
-	
-	public double getVitesse(NatureTerrain terrain) {
-		return this.getVitesse();	
+
+	public Roues(Case position, int vitesse) {
+		super(position, TypeRobot.ROUES, vitesse);
+	}
+
+	public int getVitesse(NatureTerrain terrain) {
+		return this.getVitesse();
 	}
 
 	public void deverserEau(int vol) {
-    	super.deverserEau(vol);
-    }
+		super.deverserEau(vol);
+	}
 
-	public void remplirReservoir(Carte carte) {
-		Case position = this.getPosition();
+	public void remplirReservoir() {
+		if (getCarte().isNearEau(getPosition())) {
+			remplirReservoir(TypeRobot.ROUES);
+		}
+	}
 
-		Case voisin = carte.getVoisin(position, Direction.NORD);
-		if (voisin.getNature() == NatureTerrain.EAU)
-			this.setReservoir(5000);
-
-		voisin = carte.getVoisin(position, Direction.SUD);
-		if (voisin.getNature() == NatureTerrain.EAU)
-			this.setReservoir(5000);
-
-		voisin = carte.getVoisin(position, Direction.EST);
-		if (voisin.getNature() == NatureTerrain.EAU)
-			this.setReservoir(5000);
-
-		voisin = carte.getVoisin(position, Direction.OUEST);
-		if (voisin.getNature() == NatureTerrain.EAU)
-			this.setReservoir(5000);
-
+	@Override
+	public String toString() {
+		return "Roues sur " + this.getPosition();
 	}
 
 }

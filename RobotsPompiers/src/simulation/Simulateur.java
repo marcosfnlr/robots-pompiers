@@ -59,7 +59,12 @@ public class Simulateur implements Simulable {
 	private void executerEvenements() {
 		for (Evenement e : evenements) {
 			if (e.getDateDebut() == dateSimulation) {
-				e.execute();
+				try {
+					e.execute();
+				} catch (RobotsPompiersException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		}
 	}
