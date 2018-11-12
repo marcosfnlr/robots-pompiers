@@ -16,8 +16,6 @@ public abstract class Terrestre extends Robot{
     	super.deverserEau(vol);
     }
 
-    public void remplirReservoir(Carte carte) {
-    	super.remplirReservoir(carte);
-    }
+    public abstract void remplirReservoir(Carte carte);
 
 }

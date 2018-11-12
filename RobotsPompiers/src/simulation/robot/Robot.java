@@ -106,28 +106,10 @@ public abstract class Robot {
 	public abstract double getVitesse(NatureTerrain terrain);
 
 	public void deverserEau(int vol) {
-		this.reservoir -= vol;
+		if(vol > this.reservoir) this.reservoir = 0;
+		else this.reservoir -= vol;
 	}
 
-	// public abstract void remplirReservoir();
-	public void remplirReservoir(Carte carte) {
-		Case position = this.getPosition();
-
-		Case voisin = carte.getVoisin(position, Direction.NORD);
-		if (voisin.getNature() == NatureTerrain.EAU)
-			this.setReservoir(5000);
-
-		voisin = carte.getVoisin(position, Direction.SUD);
-		if (voisin.getNature() == NatureTerrain.EAU)
-			this.setReservoir(5000);
-
-		voisin = carte.getVoisin(position, Direction.EST);
-		if (voisin.getNature() == NatureTerrain.EAU)
-			this.setReservoir(5000);
-
-		voisin = carte.getVoisin(position, Direction.OUEST);
-		if (voisin.getNature() == NatureTerrain.EAU)
-			this.setReservoir(5000);
-
-	}
+	public abstract void remplirReservoir();
+	
 }

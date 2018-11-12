@@ -5,6 +5,12 @@ import simulation.carte.Carte;
 import simulation.robot.Robot;
 import simulation.carte.Case;
 import simulation.evenement.Direction;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Comparator;
+import java.util.LinkedList;
+
 
 public class PathCalculator {
     
@@ -27,8 +33,8 @@ public class PathCalculator {
 		Case src = robot.getPosition();
 
 		PriorityQueue<PairDoubleCase> pq = new PriorityQueue<>(PairDoubleCaseComparator);
-		dist.put(src, 0);
-		pq.add(new PairDoubleCase(0, src));
+		dist.put(src, 0.0);
+		pq.add(new PairDoubleCase(0.0, src));
 
 		while (!pq.isEmpty()){
 			PairDoubleCase par = pq.poll();

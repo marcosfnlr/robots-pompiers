@@ -22,7 +22,8 @@ public class Pattes extends Terrestre{
     }
 
     public void remplirReservoir(Carte carte) {
-    	super.remplirReservoir(carte);
+    	//reservoir infini
+    	this.setReservoir(Integer.MAX_VALUE);
     }
 
 }

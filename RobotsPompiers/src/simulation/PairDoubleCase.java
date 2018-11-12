@@ -1,3 +1,6 @@
+package simulation;
+import simulation.carte.Case;
+
 public class PairDoubleCase{
 	private Double key;
 	private Case value;

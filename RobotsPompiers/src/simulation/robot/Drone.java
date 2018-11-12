@@ -3,6 +3,7 @@ import simulation.carte.Carte;
 import simulation.carte.Case;
 import simulation.carte.Incendie;
 import simulation.carte.NatureTerrain;
+import simulation.evenement.Direction;
 
 public class Drone extends Robot {
 	
@@ -21,8 +22,25 @@ public class Drone extends Robot {
     	super.deverserEau(vol);
     }
 
-    public void remplirReservoir(Carte carte) {
-    	super.remplirReservoir(carte);
-    }
+	public void remplirReservoir(Carte carte) {
+		Case position = this.getPosition();
+
+		Case voisin = carte.getVoisin(position, Direction.NORD);
+		if (voisin.getNature() == NatureTerrain.EAU)
+			this.setReservoir(10000);
+
+		voisin = carte.getVoisin(position, Direction.SUD);
+		if (voisin.getNature() == NatureTerrain.EAU)
+			this.setReservoir(10000);
+
+		voisin = carte.getVoisin(position, Direction.EST);
+		if (voisin.getNature() == NatureTerrain.EAU)
+			this.setReservoir(10000);
+
+		voisin = carte.getVoisin(position, Direction.OUEST);
+		if (voisin.getNature() == NatureTerrain.EAU)
+			this.setReservoir(10000);
+
+	}
 
 }
