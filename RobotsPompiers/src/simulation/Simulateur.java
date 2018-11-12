@@ -98,8 +98,7 @@ public class Simulateur implements Simulable {
 					Couleur.RED.getColor(), PIXELS_PAR_CASE / 2));
 		}
 		for (Robot r : dados.getRobots()) {
-			gui.addGraphicalElement(new Rectangle(r.getPosition().getColonne() * PIXELS_PAR_CASE + PIXELS_PAR_CASE / 2,
-					r.getPosition().getLigne() * PIXELS_PAR_CASE + PIXELS_PAR_CASE / 2,
+			gui.addGraphicalElement(new Rectangle(r.getX(), r.getY(),
 					r.getEtat() == EtatRobot.ARRETE ? Color.WHITE : Color.BLACK, Color.GRAY, PIXELS_PAR_CASE / 4));
 		}
 	}
@@ -113,11 +112,6 @@ public class Simulateur implements Simulable {
 	}
 
 	public boolean simulationTerminee() {
-		for (Evenement e : evenements) {
-			if (e.getDateDebut() >= dateSimulation) {
-				return false;
-			}
-		}
-		return true;
+		return false;
 	}
 }

@@ -23,7 +23,13 @@ public class RobotsPompiers {
 					donneesSimulation.getCarte().getNbLignes() * Simulateur.PIXELS_PAR_CASE, Color.WHITE);
 			Simulateur simulateur = new Simulateur(gui, donneesSimulation);
 			simulateur.ajouteEvenement(
-					new Deplacer(1L, donneesSimulation.getRobots()[1], donneesSimulation.getCarte().getCase(5, 5)));
+					new Deplacer(1, donneesSimulation.getRobots()[1], donneesSimulation.getCarte().getCase(5, 5)));
+			simulateur.ajouteEvenement(
+					new Deplacer(127, donneesSimulation.getRobots()[1], donneesSimulation.getCarte().getCase(5, 4)));
+			simulateur.ajouteEvenement(
+					new Deplacer(253, donneesSimulation.getRobots()[1], donneesSimulation.getCarte().getCase(6, 4)));
+			simulateur.ajouteEvenement(new Deplacer(253 + 126, donneesSimulation.getRobots()[1],
+					donneesSimulation.getCarte().getCase(6, 5)));
 		} catch (FileNotFoundException e) {
 			System.out.println("fichier " + args[0] + " inconnu ou illisible");
 		} catch (DataFormatException e) {

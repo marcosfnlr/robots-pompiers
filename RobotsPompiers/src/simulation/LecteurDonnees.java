@@ -192,7 +192,7 @@ public class LecteurDonnees {
 			String type = scanner.next();
 			TypeRobot typeRobot = TypeRobot.valueOf(type);
 
-			String s = scanner.findInLine("(\\\\d+)"); // double:(\\d+(\\.\\d+)?)
+			String s = scanner.findInLine("(\\d+)"); // double:(\\d+(\\.\\d+)?)
 			Case c = carte.getCase(lig, col);
 			if (s == null) {
 				switch (typeRobot) {

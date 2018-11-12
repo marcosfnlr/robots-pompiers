@@ -31,7 +31,7 @@ public abstract class Robot {
 		setRobot(position, type);
 		this.vitesse = vitesse;
 	}
-	
+
 	private void setRobot(Case position, TypeRobot type) {
 		this.position = position;
 		this.reservoir = type.getSizeReservoir();
@@ -53,7 +53,7 @@ public abstract class Robot {
 	private void addDeplacement(Deplacer deplacer) {
 		Direction direction = Direction.getDirection(position, deplacer.getDestination());
 		long dateFinal = deplacer.getDateDebut() + getCarte().getTailleCases() / getVitesse(this.position.getNature());
-		this.actionCourrent = new Deplacement(direction, dateFinal);
+		this.actionCourrent = new Deplacement(direction, deplacer.getDateDebut(), dateFinal);
 	}
 
 	public EtatRobot getEtat() {
@@ -100,6 +100,37 @@ public abstract class Robot {
 		return this.vitesse;
 	}
 
+	public int getX() {
+		checkFinAction();
+		int x = getPosition().getColonne() * Simulateur.PIXELS_PAR_CASE + Simulateur.PIXELS_PAR_CASE / 2;
+		if (actionCourrent != null && actionCourrent instanceof Deplacement) {
+			Deplacement deplacement = (Deplacement) actionCourrent;
+			x += deplacement.getDeltaX(getSimulateur().getDateSimulation());
+		}
+		return x;
+	}
+
+	public int getY() {
+		checkFinAction();
+		int y = getPosition().getLigne() * Simulateur.PIXELS_PAR_CASE + Simulateur.PIXELS_PAR_CASE / 2;
+		if (actionCourrent != null && actionCourrent instanceof Deplacement) {
+			Deplacement deplacement = (Deplacement) actionCourrent;
+			y += deplacement.getDeltaY(getSimulateur().getDateSimulation());
+		}
+		return y;
+	}
+
+	private void checkFinAction() {
+		if (actionCourrent != null && getSimulateur().getDateSimulation() == actionCourrent.getDateFinal()) {
+			if (actionCourrent instanceof Deplacement) {
+				Deplacement deplacement = (Deplacement) actionCourrent;
+				this.position = getCarte().getVoisin(position, deplacement.getDirection());
+			}
+			actionCourrent = null;
+			etat = EtatRobot.ARRETE;
+		}
+	}
+
 	public abstract int getVitesse(NatureTerrain terrain);
 
 	public void deverserEau(int vol) {
@@ -117,7 +148,7 @@ public abstract class Robot {
 		}
 
 	}
-	
+
 	public abstract void remplirReservoir();
 
 }
