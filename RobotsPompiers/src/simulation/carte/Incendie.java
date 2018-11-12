@@ -22,7 +22,8 @@ public class Incendie {
 		this.litres = litres;
 	}
 
-	public void eteindreIncendie(int vol) {
-		this.litres -= vol;
-	}
+    
+    public void eteindreIncendie(int vol) {
+    	this.litres -= vol;
+    }
 }

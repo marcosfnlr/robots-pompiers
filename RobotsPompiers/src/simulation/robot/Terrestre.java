@@ -1,21 +1,18 @@
 package simulation.robot;
-import simulation.carte.Carte;
+
 import simulation.carte.Case;
-import simulation.carte.Incendie;
 import simulation.carte.NatureTerrain;
 
-public abstract class Terrestre extends Robot{
-	
-	public Terrestre (Case position, double vitesse) {
-		super(position, vitesse);
+public abstract class Terrestre extends Robot {
+
+	public Terrestre(Case position, TypeRobot type) {
+		super(position, type);
 	}
-	
-	public abstract double getVitesse(NatureTerrain terrain);
 
-	public void deverserEau(int vol) {
-    	super.deverserEau(vol);
-    }
+	public Terrestre(Case position, TypeRobot type, int vitesse) {
+		super(position, type, vitesse);
+	}
 
-    public abstract void remplirReservoir(Carte carte);
+	public abstract int getVitesse(NatureTerrain terrain);
 
 }

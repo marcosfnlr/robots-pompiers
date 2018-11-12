@@ -1,5 +1,7 @@
 package simulation.evenement;
 
+import simulation.RobotsPompiersException;
+
 public abstract class Evenement {
 	private long dateDebut;
 
@@ -11,5 +13,5 @@ public abstract class Evenement {
 		return this.dateDebut;
 	}
 
-	public abstract void execute();
+	public abstract void execute() throws RobotsPompiersException;
 }

@@ -1,5 +1,6 @@
 package simulation.robot;
 
+import simulation.RobotsPompiersException;
 import simulation.Simulateur;
 import simulation.carte.Carte;
 import simulation.carte.Case;
@@ -14,37 +15,47 @@ public abstract class Robot {
 
 	private Simulateur simulateur;
 	private Case position;
-	private double vitesse;
+	private int vitesse;
 	private int reservoir;
-	private int tempsRemplissage; // temps pour remplir tout le reservoir en secondes
-	private double vitesseIntervention; // litres per secondes
+	private int vitesseRemplissage; // temps pour remplir tout le reservoir en secondes
+	private int vitesseIntervention;
 	private EtatRobot etat;
 	private Action actionCourrent;
 
-	public Robot(Case position, double vitesse) {
+	public Robot(Case position, TypeRobot type) {
 		this.position = position;
-		this.vitesse = vitesse;
+		this.vitesse = type.getVitesse();
+		this.reservoir = type.getSizeReservoir();
+		this.vitesseRemplissage = type.getRemplissage();
+		this.vitesseIntervention = type.getIntervention();
 		this.simulateur = null;
 		this.actionCourrent = null;
 		this.etat = EtatRobot.ARRETE;
 	}
 	
-	public void addAction(Evenement evenement) throws Exception {
-		if(this.actionCourrent != null) throw new Exception();
-		if(evenement instanceof Deplacer) {
-			addDeplacement((Deplacer)evenement);
+	public Robot(Case position, TypeRobot type, int vitesse) {
+		this.position = position;
+		this.vitesse = vitesse;
+		this.reservoir = type.getSizeReservoir();
+		this.vitesseRemplissage = type.getRemplissage();
+		this.vitesseIntervention = type.getIntervention();
+		this.simulateur = null;
+		this.actionCourrent = null;
+		this.etat = EtatRobot.ARRETE;
+	}
+
+	public void addAction(Evenement evenement) throws RobotsPompiersException {
+		if (this.actionCourrent != null)
+			throw new RobotsPompiersException("Robot a deja une action. Pas possible de faire:" + evenement);
+		if (evenement instanceof Deplacer) {
+			addDeplacement((Deplacer) evenement);
 		}
 	}
-	
-	public void addDeplacer(Deplacer deplacer) {
-		
-	}
-	
-	private void addDeplacement(Deplacer d) throws Exception {
-		if(this.actionCourrent != null) throw new Exception();
-		if(d instanceof Deplacer) {
-			
-		}
+
+	private void addDeplacement(Deplacer deplacer) {
+		Direction direction = Direction.getDirection(position, deplacer.getDestination());
+		long dateFinal = deplacer.getDateDebut() + getCarte().getTailleCases() / getVitesse(this.position.getNature());
+		this.actionCourrent = new Deplacement(direction, dateFinal);
 	}
 
 	public EtatRobot getEtat() {
@@ -67,28 +78,16 @@ public abstract class Robot {
 		this.simulateur = simulateur;
 	}
 
-	public int getTempsRemplissage() {
-		return this.tempsRemplissage;
+	public int getVitesseRemplissage() {
+		return this.vitesseRemplissage;
 	}
 
-	public void setTempsRemplissage(int tempsRemplissage) {
-		this.tempsRemplissage = tempsRemplissage;
-	}
-
-	public double getVitesseIntervention() {
+	public int getVitesseIntervention() {
 		return vitesseIntervention;
-	}
-
-	public void setVitesseIntervention(double vitesseIntervention) {
-		this.vitesseIntervention = vitesseIntervention;
 	}
 
 	public int getReservoir() {
 		return this.reservoir;
-	}
-
-	public void setReservoir(int reservoir) {
-		this.reservoir = reservoir;
 	}
 
 	public Case getPosition() {
@@ -99,17 +98,28 @@ public abstract class Robot {
 		this.position = pos;
 	}
 
-	public double getVitesse() {
+	public int getVitesse() {
 		return this.vitesse;
 	}
 
-	public abstract double getVitesse(NatureTerrain terrain);
+	public abstract int getVitesse(NatureTerrain terrain);
 
 	public void deverserEau(int vol) {
-		if(vol > this.reservoir) this.reservoir = 0;
-		else this.reservoir -= vol;
+		if (vol > this.reservoir)
+			this.reservoir = 0;
+		else
+			this.reservoir -= vol;
 	}
 
-	public abstract void remplirReservoir();
+	public void remplirReservoir(TypeRobot type) {
+		if (reservoir + type.getRemplissage() >= type.getSizeReservoir()) {
+			reservoir = type.getSizeReservoir();
+		} else {
+			reservoir += type.getRemplissage();
+		}
+
+	}
 	
+	public abstract void remplirReservoir();
+
 }
