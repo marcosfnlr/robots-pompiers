@@ -1,4 +1,5 @@
 package simulation.carte;
+
 import simulation.evenement.Direction;
 
 public class Carte {
@@ -51,7 +52,7 @@ public class Carte {
 		return cases[lig * nbColonnes + col];
 	}
 
-    public Case[] getCases() {
+	public Case[] getCases() {
 		return cases;
 	}
 
@@ -82,5 +83,25 @@ public class Carte {
 		default:
 			return false;
 		}
+	}
+
+	public boolean isNearEau(Case position) {
+		Case voisin;
+		voisin = getVoisin(position, Direction.NORD);
+		if (voisin != null && voisin.getNature() == NatureTerrain.EAU)
+			return true;
+
+		voisin = getVoisin(position, Direction.SUD);
+		if (voisin != null && voisin.getNature() == NatureTerrain.EAU)
+			return true;
+
+		voisin = getVoisin(position, Direction.EST);
+		if (voisin != null && voisin.getNature() == NatureTerrain.EAU)
+			return true;
+
+		voisin = getVoisin(position, Direction.OUEST);
+		if (voisin != null && voisin.getNature() == NatureTerrain.EAU)
+			return true;
+		return false;
 	}
 }

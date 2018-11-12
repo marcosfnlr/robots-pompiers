@@ -1,7 +1,7 @@
 package simulation.evenement;
 
+import simulation.RobotsPompiersException;
 import simulation.carte.Case;
-import simulation.evenement.action.Deplacement;
 import simulation.robot.EtatRobot;
 import simulation.robot.Robot;
 
@@ -15,8 +15,17 @@ public class Deplacer extends Evenement {
 		this.destination = destination;
 	}
 
-	public void execute() {
+	public void execute() throws RobotsPompiersException{
 		robot.setEtat(EtatRobot.DEPLACEMENT);
 		robot.addAction(this);
+	}
+
+	public Case getDestination() {
+		return this.destination;
+	}
+
+	@Override
+	public String toString() {
+		return "Deplacement du robot " + robot;
 	}
 }

@@ -1,29 +1,36 @@
 package simulation.robot;
-import simulation.carte.Carte;
+
 import simulation.carte.Case;
-import simulation.carte.Incendie;
 import simulation.carte.NatureTerrain;
 
-public class Pattes extends Terrestre{
-	
-	public Pattes (Case position, double vitesse) {
-		super(position, vitesse);
-		//reservoir infini. ne necessite pas remplir
-		this.setVitesseIntervention(10);
+public class Pattes extends Terrestre {
+
+	public Pattes(Case position) {
+		super(position, TypeRobot.PATTES);
 	}
 	
-	public double getVitesse(NatureTerrain terrain) {
-		if(terrain == NatureTerrain.ROCHE) return 10;
-		else return this.getVitesse();
+	public Pattes(Case position, int vitesse) {
+		super(position, TypeRobot.PATTES, vitesse);
+	}
+
+	public int getVitesse(NatureTerrain terrain) {
+		if (terrain == NatureTerrain.ROCHE)
+			return 10;
+		else
+			return this.getVitesse();
 	}
 
 	public void deverserEau(int vol) {
-    	super.deverserEau(vol);
-    }
+		super.deverserEau(vol);
+	}
 
-    public void remplirReservoir(Carte carte) {
-    	//reservoir infini
-    	this.setReservoir(Integer.MAX_VALUE);
-    }
+	public void remplirReservoir() {
+		
+	}
+
+	@Override
+	public String toString() {
+		return "Pattes sur " + this.getPosition();
+	}
 
 }

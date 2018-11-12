@@ -192,27 +192,27 @@ public class LecteurDonnees {
 			String type = scanner.next();
 			TypeRobot typeRobot = TypeRobot.valueOf(type);
 
-			String s = scanner.findInLine("(\\d+(\\.\\d+)?)"); // 1 or more digit(s) ?
+			String s = scanner.findInLine("(\\\\d+)"); // double:(\\d+(\\.\\d+)?)
 			Case c = carte.getCase(lig, col);
 			if (s == null) {
 				switch (typeRobot) {
 				case DRONE:
-					robot = new Drone(c, TypeRobot.DRONE.getVitesse());
+					robot = new Drone(c);
 					break;
 				case CHENILLES:
-					robot = new Chenilles(c, TypeRobot.CHENILLES.getVitesse());
+					robot = new Chenilles(c);
 					break;
 				case PATTES:
-					robot = new Pattes(c, TypeRobot.PATTES.getVitesse());
+					robot = new Pattes(c);
 					break;
 				case ROUES:
-					robot = new Roues(c, TypeRobot.ROUES.getVitesse());
+					robot = new Roues(c);
 					break;
 				default:
 					throw new DataFormatException("Type robot invalide. ");
 				}
 			} else {
-				double vitesse = Double.parseDouble(s);
+				int vitesse = Integer.parseInt(s);
 				switch (typeRobot) {
 				case DRONE:
 					robot = new Drone(c, vitesse);
