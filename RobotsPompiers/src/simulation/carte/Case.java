@@ -27,4 +27,13 @@ public class Case {
 	public String toString() {
 		return "(" + ligne + "," + colonne + ")";
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Case) {
+			Case c = (Case) o;
+			return c.getLigne() == getLigne() && c.getColonne() == getColonne();
+		}
+		return super.equals(o);
+	}
 }

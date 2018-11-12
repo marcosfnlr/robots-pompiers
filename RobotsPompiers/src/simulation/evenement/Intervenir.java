@@ -1,5 +1,6 @@
 package simulation.evenement;
 
+import simulation.RobotsPompiersException;
 import simulation.robot.EtatRobot;
 import simulation.robot.Robot;
 
@@ -11,7 +12,7 @@ public class Intervenir extends Evenement{
 		this.robot = robot;
 	}
 	
-	public void execute() {
+	public void execute() throws RobotsPompiersException{
 		robot.setEtat(EtatRobot.INTERVENTION);
 		robot.addAction(this);
 	}

@@ -1,3 +1,5 @@
+package tests;
+
 import java.io.FileNotFoundException;
 import java.util.zip.DataFormatException;
 import simulation.carte.Carte;
