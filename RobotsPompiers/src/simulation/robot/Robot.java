@@ -23,14 +23,12 @@ public abstract class Robot {
 	private Action actionCourrent;
 
 	public Robot(Case position, TypeRobot type) {
-		this.position = position;
+		setRobot(position, type);
+	}
+
+	private void setRobot(Case position, TypeRobot type) {
+		setRobot(position, type);
 		this.vitesse = type.getVitesse();
-		this.reservoir = type.getSizeReservoir();
-		this.vitesseRemplissage = type.getRemplissage();
-		this.vitesseIntervention = type.getIntervention();
-		this.simulateur = null;
-		this.actionCourrent = null;
-		this.etat = EtatRobot.ARRETE;
 	}
 	
 	public Robot(Case position, TypeRobot type, int vitesse) {
