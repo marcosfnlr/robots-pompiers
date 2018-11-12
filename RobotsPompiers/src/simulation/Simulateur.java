@@ -58,7 +58,7 @@ public class Simulateur implements Simulable {
 
 	private void executerEvenements() {
 		for (Evenement e : evenements) {
-			if (e.isHappening(dateSimulation)) {
+			if (e.getDateDebut() == dateSimulation) {
 				e.execute();
 			}
 		}
@@ -109,7 +109,7 @@ public class Simulateur implements Simulable {
 
 	public boolean simulationTerminee() {
 		for (Evenement e : evenements) {
-			if (e.isHappening(dateSimulation)) {
+			if (e.getDateDebut() >= dateSimulation) {
 				return false;
 			}
 		}

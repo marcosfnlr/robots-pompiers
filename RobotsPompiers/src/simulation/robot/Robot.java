@@ -4,7 +4,11 @@ import simulation.Simulateur;
 import simulation.carte.Carte;
 import simulation.carte.Case;
 import simulation.carte.NatureTerrain;
+import simulation.evenement.Deplacer;
 import simulation.evenement.Direction;
+import simulation.evenement.Evenement;
+import simulation.evenement.action.Action;
+import simulation.evenement.action.Deplacement;
 
 public abstract class Robot {
 
@@ -15,12 +19,32 @@ public abstract class Robot {
 	private int tempsRemplissage; // temps pour remplir tout le reservoir en secondes
 	private double vitesseIntervention; // litres per secondes
 	private EtatRobot etat;
+	private Action actionCourrent;
 
 	public Robot(Case position, double vitesse) {
 		this.position = position;
 		this.vitesse = vitesse;
 		this.simulateur = null;
+		this.actionCourrent = null;
 		this.etat = EtatRobot.ARRETE;
+	}
+	
+	public void addAction(Evenement evenement) throws Exception {
+		if(this.actionCourrent != null) throw new Exception();
+		if(evenement instanceof Deplacer) {
+			addDeplacement((Deplacer)evenement);
+		}
+	}
+	
+	public void addDeplacer(Deplacer deplacer) {
+		
+	}
+	
+	private void addDeplacement(Deplacer d) throws Exception {
+		if(this.actionCourrent != null) throw new Exception();
+		if(d instanceof Deplacer) {
+			
+		}
 	}
 
 	public EtatRobot getEtat() {
