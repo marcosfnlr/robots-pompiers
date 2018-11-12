@@ -22,8 +22,15 @@ public class Incendie {
 		this.litres = litres;
 	}
 
-    
-    public void eteindreIncendie(int vol) {
-    	this.litres -= vol;
-    }
+	public void eteindreIncendie(int vol) {
+		this.litres -= vol;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Incendie) {
+			return (((Incendie) o).getPosition().equals(position));
+		}
+		return super.equals(o);
+	}
 }

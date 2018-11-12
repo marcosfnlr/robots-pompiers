@@ -6,6 +6,7 @@ import java.util.zip.DataFormatException;
 
 import gui.GUISimulator;
 import simulation.evenement.Deplacer;
+import simulation.evenement.Intervenir;
 
 public class RobotsPompiers {
 
@@ -30,6 +31,8 @@ public class RobotsPompiers {
 					new Deplacer(253, donneesSimulation.getRobots()[1], donneesSimulation.getCarte().getCase(6, 4)));
 			simulateur.ajouteEvenement(new Deplacer(253 + 126, donneesSimulation.getRobots()[1],
 					donneesSimulation.getCarte().getCase(6, 5)));
+			simulateur.ajouteEvenement(new Intervenir(253 + 252, donneesSimulation.getRobots()[1],
+					donneesSimulation.getIncendies().get(4)));
 		} catch (FileNotFoundException e) {
 			System.out.println("fichier " + args[0] + " inconnu ou illisible");
 		} catch (DataFormatException e) {

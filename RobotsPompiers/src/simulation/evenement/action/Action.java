@@ -1,5 +1,7 @@
 package simulation.evenement.action;
 
+import simulation.robot.Robot;
+
 public abstract class Action {
 
 	private long dateInicial;
@@ -17,5 +19,7 @@ public abstract class Action {
 	public long getDateInicial() {
 		return dateInicial;
 	}
+
+	public abstract void finir(Robot robot);
 
 }

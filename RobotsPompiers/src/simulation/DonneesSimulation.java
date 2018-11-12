@@ -1,14 +1,17 @@
 package simulation;
+
+import java.util.List;
+
 import simulation.carte.Carte;
 import simulation.carte.Incendie;
 import simulation.robot.Robot;
 
 public class DonneesSimulation {
 	private Carte carte;
-	private Incendie[] incendies;
+	private List<Incendie> incendies;
 	private Robot[] robots;
 
-	public DonneesSimulation(Carte carte, Incendie[] incendies, Robot[] robots) {
+	public DonneesSimulation(Carte carte, List<Incendie> incendies, Robot[] robots) {
 		super();
 		this.carte = carte;
 		this.incendies = incendies;
@@ -19,7 +22,7 @@ public class DonneesSimulation {
 		return carte;
 	}
 
-	public Incendie[] getIncendies() {
+	public List<Incendie> getIncendies() {
 		return incendies;
 	}
 

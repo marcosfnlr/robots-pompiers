@@ -2,6 +2,7 @@ package simulation.evenement.action;
 
 import simulation.Simulateur;
 import simulation.evenement.Direction;
+import simulation.robot.Robot;
 
 public class Deplacement extends Action {
 
@@ -18,9 +19,8 @@ public class Deplacement extends Action {
 			return (int) (Simulateur.PIXELS_PAR_CASE
 					* (1 - (getDateFinal() - dateCourrant) * 1.0 / (getDateFinal() - getDateInicial())));
 		case OUEST:
-			int x = (int) (-1.0 * Simulateur.PIXELS_PAR_CASE
+			return (int) (-1.0 * Simulateur.PIXELS_PAR_CASE
 					* (1 - (getDateFinal() - dateCourrant) * 1.0 / (getDateFinal() - getDateInicial())));
-			return x;
 		default:
 			return 0;
 		}
@@ -43,4 +43,7 @@ public class Deplacement extends Action {
 		return direction;
 	}
 
+	public void finir(Robot robot) {
+		robot.setPosition(robot.getCarte().getVoisin(robot.getPosition(), getDirection()));
+	}
 }

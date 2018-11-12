@@ -1,8 +1,8 @@
 package simulation.robot;
 
 public enum TypeRobot {
-	DRONE(100, 10000, 30, 10000 / 30), ROUES(80, 5000, 10, 100 / 5), CHENILLES(60, 2000, 5, 100 / 8), PATTES(30, -1, -1,
-			10);
+	DRONE(100, 10000, 30, 10000 / 30), ROUES(80, 5000, 10, 100 / 5), CHENILLES(60, 2000, 5, 100 / 8), PATTES(30,
+			Integer.MAX_VALUE, 0, 10);
 
 	private int vitesse;
 	private int sizeReservoir;

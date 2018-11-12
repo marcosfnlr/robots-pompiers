@@ -11,6 +11,7 @@ import simulation.evenement.Evenement;
 import simulation.evenement.Intervenir;
 import simulation.evenement.action.Action;
 import simulation.evenement.action.Deplacement;
+import simulation.evenement.action.Intervention;
 
 public abstract class Robot {
 
@@ -59,9 +60,18 @@ public abstract class Robot {
 		long dateFinal = deplacer.getDateDebut() + getCarte().getTailleCases() / getVitesse(this.position.getNature());
 		this.actionCourrent = new Deplacement(direction, deplacer.getDateDebut(), dateFinal);
 	}
-	
+
 	private void addIntervention(Intervenir intervenir) {
-		
+		long dateFinal;
+		boolean finIncendie = intervenir.getIncendie().getLitres() <= getReservoir();
+		boolean repVide = intervenir.getIncendie().getLitres() >= getReservoir();
+		if (intervenir.getIncendie().getLitres() > getReservoir()) {
+			dateFinal = intervenir.getDateDebut() + getReservoir() / getVitesseIntervention();
+		} else {
+			dateFinal = intervenir.getDateDebut() + intervenir.getIncendie().getLitres() / getVitesseIntervention();
+		}
+		this.actionCourrent = new Intervention(intervenir.getDateDebut(), dateFinal, finIncendie, repVide,
+				intervenir.getIncendie());
 	}
 
 	public EtatRobot getEtat() {
@@ -109,7 +119,6 @@ public abstract class Robot {
 	}
 
 	public int getX() {
-		checkFinAction();
 		int x = getPosition().getColonne() * Simulateur.PIXELS_PAR_CASE + Simulateur.PIXELS_PAR_CASE / 2;
 		if (actionCourrent != null && actionCourrent instanceof Deplacement) {
 			Deplacement deplacement = (Deplacement) actionCourrent;
@@ -119,7 +128,6 @@ public abstract class Robot {
 	}
 
 	public int getY() {
-		checkFinAction();
 		int y = getPosition().getLigne() * Simulateur.PIXELS_PAR_CASE + Simulateur.PIXELS_PAR_CASE / 2;
 		if (actionCourrent != null && actionCourrent instanceof Deplacement) {
 			Deplacement deplacement = (Deplacement) actionCourrent;
@@ -128,15 +136,37 @@ public abstract class Robot {
 		return y;
 	}
 
-	private void checkFinAction() {
-		if (actionCourrent != null && getSimulateur().getDateSimulation() == actionCourrent.getDateFinal()) {
-			if (actionCourrent instanceof Deplacement) {
-				Deplacement deplacement = (Deplacement) actionCourrent;
-				this.position = getCarte().getVoisin(position, deplacement.getDirection());
+	public void traiterAction() {
+		if (actionCourrent != null) {
+			boolean fini = getSimulateur().getDateSimulation() == actionCourrent.getDateFinal();
+
+			if (fini) {
+				actionCourrent.finir(this);
+				actionCourrent = null;
+				etat = EtatRobot.ARRETE;
+			} else {
+				if (actionCourrent instanceof Intervention) {
+					Intervention intervention = (Intervention) actionCourrent;
+					intervention.getIncendie()
+							.eteindreIncendie(reservoir > vitesseIntervention ? vitesseIntervention : reservoir);
+					intervirUnUnite();
+				}
 			}
-			actionCourrent = null;
-			etat = EtatRobot.ARRETE;
 		}
+	}
+
+	private void intervirUnUnite() {
+		if (!(this instanceof Pattes)) {
+			if (reservoir > vitesseIntervention) {
+				reservoir -= vitesseIntervention;
+			} else {
+				reservoir = 0;
+			}
+		}
+	}
+
+	public void vider() {
+		reservoir = 0;
 	}
 
 	public abstract int getVitesse(NatureTerrain terrain);

@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import gui.GUISimulator;
@@ -21,10 +20,6 @@ public class Simulateur implements Simulable {
 	private GUISimulator gui;
 	private DonneesSimulation dados;
 	public static final int PIXELS_PAR_CASE = 20;
-	private int x;
-	private int y;
-	private Iterator<Integer> xIterator;
-	private Iterator<Integer> yIterator;
 	private long dateSimulation;
 	private List<Evenement> evenements;
 
@@ -73,6 +68,9 @@ public class Simulateur implements Simulable {
 	public void next() {
 		incrementeDate();
 		if (!simulationTerminee()) {
+			for (Robot r : dados.getRobots()) {
+				r.traiterAction();
+			}
 			executerEvenements();
 			draw();
 		}
@@ -101,6 +99,10 @@ public class Simulateur implements Simulable {
 			gui.addGraphicalElement(new Rectangle(r.getX(), r.getY(),
 					r.getEtat() == EtatRobot.ARRETE ? Color.WHITE : Color.BLACK, Color.GRAY, PIXELS_PAR_CASE / 4));
 		}
+	}
+
+	public void removeIncendie(Incendie incendie) {
+		dados.getIncendies().remove(incendie);
 	}
 
 	public void ajouteEvenement(Evenement e) {
