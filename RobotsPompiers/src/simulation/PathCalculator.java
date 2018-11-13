@@ -21,7 +21,7 @@ public class PathCalculator {
      * @param destination Case où va le robot
      * @return LinkedList avec des cases dans l'ordre à suivre, ou null si aucun chemin n'existe
      */    
-	public static LinkedList<Case> calculate(Carte carte, Robot robot, Case dest){
+	public static PairListCaseDouble calculate(Carte carte, Robot robot, Case dest){
 
 		PathCalculator pathCalculator = new PathCalculator(carte, robot, dest);
 
@@ -77,7 +77,8 @@ public class PathCalculator {
 			}
 		}
 		Collections.reverse(lista);
-		return lista;
+		PairListCaseDouble ld = new PairListCaseDouble(lista, dist.get(dest));
+		return ld;
 	}
 
     // Tout le reste de la classe est prive
@@ -93,6 +94,6 @@ public class PathCalculator {
     }
 
     private double WeightCalculator(Case position){
-    	return this.robot.getVitesse(position.getNature())/this.carte.getTailleCases();
+    	return (double)this.robot.getVitesse(position.getNature())/this.carte.getTailleCases();
     }
 }

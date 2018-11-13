@@ -24,15 +24,15 @@ public class RobotsPompiers {
 					donneesSimulation.getCarte().getNbLignes() * Simulateur.PIXELS_PAR_CASE, Color.WHITE);
 			Simulateur simulateur = new Simulateur(gui, donneesSimulation);
 			simulateur.ajouteEvenement(
-					new Deplacer(1, donneesSimulation.getRobots()[1], donneesSimulation.getCarte().getCase(5, 5)));
+					new Deplacer(1, donneesSimulation.getRobots()[0], donneesSimulation.getCarte().getCase(3, 3)));
 			simulateur.ajouteEvenement(
-					new Deplacer(127, donneesSimulation.getRobots()[1], donneesSimulation.getCarte().getCase(5, 4)));
+					new Deplacer(127, donneesSimulation.getRobots()[0], donneesSimulation.getCarte().getCase(3, 2)));
 			simulateur.ajouteEvenement(
-					new Deplacer(253, donneesSimulation.getRobots()[1], donneesSimulation.getCarte().getCase(6, 4)));
-			simulateur.ajouteEvenement(new Deplacer(253 + 126, donneesSimulation.getRobots()[1],
-					donneesSimulation.getCarte().getCase(6, 5)));
-			simulateur.ajouteEvenement(new Intervenir(253 + 252, donneesSimulation.getRobots()[1],
-					donneesSimulation.getIncendies().get(4)));
+					new Deplacer(253, donneesSimulation.getRobots()[0], donneesSimulation.getCarte().getCase(3, 1)));
+			simulateur.ajouteEvenement(new Deplacer(253 + 126, donneesSimulation.getRobots()[0],
+					donneesSimulation.getCarte().getCase(2, 3)));
+			simulateur.ajouteEvenement(new Intervenir(253 + 252, donneesSimulation.getRobots()[0],
+					donneesSimulation.getIncendies().get(0)));
 		} catch (FileNotFoundException e) {
 			System.out.println("fichier " + args[0] + " inconnu ou illisible");
 		} catch (DataFormatException e) {

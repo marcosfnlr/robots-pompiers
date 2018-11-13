@@ -1,6 +1,7 @@
 package tests;
 
 import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.zip.DataFormatException;
 import simulation.carte.Carte;
 import simulation.carte.Incendie;
@@ -19,10 +20,10 @@ public class ShortestPathTester{
 		try{
 			DonneesSimulation donneesSimulation = LecteurDonnees.lire(args[0]);
 			Carte carte = donneesSimulation.getCarte();
-			Incendie[] incendie = donneesSimulation.getIncendies();
+			List<Incendie> incendie = donneesSimulation.getIncendies();
 			Robot[] robot = donneesSimulation.getRobots();
 
-			System.out.println(PathCalculator.calculate(carte, robot[0], incendie[0].getPosition()));
+			System.out.println(PathCalculator.calculate(carte, robot[0], incendie.get(0).getPosition()));
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

@@ -2,15 +2,16 @@ package simulation;
 
 import java.util.List;
 
-import simulation.DonneesSimulation;
-import simulation.carte.Incendie;
 import simulation.carte.Carte;
 import simulation.carte.Case;
+import simulation.carte.Incendie;
 import simulation.carte.NatureTerrain;
+import simulation.evenement.Deplacer;
 import simulation.evenement.Direction;
-import simulation.robot.Robot;
+import simulation.evenement.Intervenir;
 import simulation.robot.Drone;
 import simulation.robot.EtatRobot;
+import simulation.robot.Robot;
 
 public class ChefPompier {
 	
@@ -20,11 +21,11 @@ public class ChefPompier {
 		this.donnees = donnees;
 	}
 	
-	public void assignerRobotsIncendie(DonneesSimulation donnees) {
+	public List assignerRobotsIncendie(DonneesSimulation donnees) {
 		
 		Carte carte = donnees.getCarte();
-		int shortestPath = Integer.MAX_VALUE;
-		Robot robotPlusProche;
+		double shortestPath = Double.MAX_VALUE;
+		Robot robotPlusProche = null;
 		
 		for(Incendie incendie : donnees.getIncendies()) {
 			
@@ -33,29 +34,40 @@ public class ChefPompier {
 			Case lieuIncendie = incendie.getPosition();
 			
 			for(Robot robot : donnees.getRobots()) {
-				List<Case> liste = PathCalculator.calculate(carte, robot, lieuIncendie);
+				PairListCaseDouble ld = PathCalculator.calculate(carte, robot, lieuIncendie);
+				List<Case> lista = ld.getLista();
+				Double dist = ld.getDist();
 				if(robot.getEtat() == EtatRobot.ARRETE && robot.getReservoir() != 0) { //trouve robot en attente et non vide
-					if (liste.size() < shortestPath) {
-						shortestPath = liste.size();
+					if (dist < shortestPath) {
+						shortestPath = dist;
 						robotPlusProche = robot;
 					}	
 				}
-				// chama criacao de sequencia de eventos de deplacement para robotPlusProche e por ultimo o evento intevention
+				long date = robotPlusProche.getSimulateur().getDateSimulation();
+				
+				for(Case pos : lista) {
+					Deplacer dep = new Deplacer(date, robotPlusProche, pos);
+					// chama criacao de sequencia de eventos de deplacement para robotPlusProche e por ultimo o evento intevention
+					date += carte.getTailleCases()/robotPlusProche.getVitesse(pos.getNature())+1;
+				}
+				Intervenir interv = new Intervenir(date, robotPlusProche, incendie);
 			}
 		}
 	}
 	
 	public void assignerRobotsRemplissage() {
 		Carte carte = donnees.getCarte();
-		int shortestPath = Integer.MAX_VALUE;
+		double shortestPath = Double.MAX_VALUE;
 						
 		for(Robot robot : donnees.getRobots()) {
 			//type drone
 			if(robot.getEtat() == EtatRobot.ARRETE && robot.getReservoir() == 0 && robot instanceof Drone) { //trouve drone en attente et vide
 				for(Case position : carte.getCases()) {
 					if(position.getNature() == NatureTerrain.EAU) {// trouve position dans l'eau
-						List<Case> liste = PathCalculator.calculate(carte, robot, position);
-						if(liste.size() < shortestPath) shortestPath = liste.size();
+						PairListCaseDouble ld = PathCalculator.calculate(carte, robot, position);
+						List<Case> liste = ld.getLista();
+						Double dist = ld.getDist();
+						if(dist < shortestPath) shortestPath = dist;
 					}
 				}
 			}
@@ -65,8 +77,10 @@ public class ChefPompier {
 					if(position.getNature() == NatureTerrain.EAU) {// trouve position dans l'eau
 						for(Direction dir : Direction.values()){
 							Case voisin = carte.getVoisin(position, dir);
-							List<Case> liste = PathCalculator.calculate(carte, robot, voisin);
-							if(liste.size() < shortestPath) shortestPath = liste.size();
+							PairListCaseDouble ld = PathCalculator.calculate(carte, robot, voisin);
+							List<Case> liste = ld.getLista();
+							Double dist = ld.getDist();
+							if(dist < shortestPath) shortestPath = dist;
 						}						
 					}
 				}
