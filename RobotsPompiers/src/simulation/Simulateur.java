@@ -26,12 +26,13 @@ public class Simulateur implements Simulable {
 	private List<Robot> robots;
 	private long dateSimulation;
 	private List<Evenement> evenements;
+	private ChefPompier chefPompier;
 
 	public Simulateur(GUISimulator gui, DonneesSimulation dados) throws RobotsPompiersException {
-
 		this.dateSimulation = 0;
 		this.dados = dados;
 		this.gui = gui;
+		this.chefPompier = new ChefPompier(this);
 		gui.setSimulable(this);
 		for (Robot r : dados.getRobots()) {
 			r.setSimulateur(this);
@@ -42,6 +43,7 @@ public class Simulateur implements Simulable {
 		if (screenSize.getHeight() < gui.getPanelHeight() || screenSize.getWidth() < gui.getPanelWidth()) {
 			throw new RobotsPompiersException("Taille de carte pas valide."); // TODO change type
 		}
+		chefPompier.assignerRobotsIncendie();
 		draw();
 	}
 
@@ -49,6 +51,10 @@ public class Simulateur implements Simulable {
 		this.evenements = new ArrayList<Evenement>();
 		robots = new ArrayList<Robot>(Arrays.asList(dados.getRobots()));
 		incendies = new ArrayList<Incendie>(Arrays.asList(dados.getIncendies()));
+	}
+
+	public ChefPompier getChefPompier() {
+		return chefPompier;
 	}
 
 	public Carte getCarte() {
