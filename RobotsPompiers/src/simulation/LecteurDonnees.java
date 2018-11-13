@@ -2,8 +2,6 @@ package simulation;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -52,7 +50,7 @@ public class LecteurDonnees {
 	public static DonneesSimulation lire(String fichierDonnees) throws FileNotFoundException, DataFormatException {
 		LecteurDonnees lecteur = new LecteurDonnees(fichierDonnees);
 		Carte carte = lecteur.lireCarte();
-		List<Incendie> incendies = lecteur.lireIncendies(carte);
+		Incendie[] incendies = lecteur.lireIncendies(carte);
 		Robot[] robots = lecteur.lireRobots(carte);
 		scanner.close();
 		return new DonneesSimulation(carte, incendies, robots);
@@ -121,13 +119,14 @@ public class LecteurDonnees {
 	/**
 	 * Lit et affiche les donnees des incendies.
 	 */
-	private List<Incendie> lireIncendies(Carte carte) throws DataFormatException {
+	private Incendie[] lireIncendies(Carte carte) throws DataFormatException {
 		ignorerCommentaires();
-		List<Incendie> incendies = new ArrayList<Incendie>();
+		Incendie[] incendies;
 		try {
 			int nbIncendies = scanner.nextInt();
+			incendies = new Incendie[nbIncendies];
 			for (int i = 0; i < nbIncendies; i++) {
-				incendies.add(lireIncendie(i, carte));
+				incendies[i] = lireIncendie(i, carte);
 			}
 
 		} catch (NoSuchElementException e) {

@@ -20,16 +20,6 @@ public class Chenilles extends Terrestre {
 			return this.getVitesse();
 	}
 
-	public void deverserEau(int vol) {
-		super.deverserEau(vol);
-	}
-
-	public void remplirReservoir() {
-		if (getCarte().isNearEau(getPosition())) {
-			remplirReservoir(TypeRobot.CHENILLES);
-		}
-	}
-
 	@Override
 	public String toString() {
 		return "Chenilles sur " + this.getPosition();

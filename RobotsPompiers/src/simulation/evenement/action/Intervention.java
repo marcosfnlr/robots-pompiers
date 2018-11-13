@@ -32,7 +32,7 @@ public class Intervention extends Action {
 
 	public void finir(Robot robot) {
 		if (finIncendie) {
-			robot.getSimulateur().removeIncendie(incendie);
+			incendie.eteindre();
 		}
 		if (repositoireVide && !(robot instanceof Pattes)) {
 			robot.vider();

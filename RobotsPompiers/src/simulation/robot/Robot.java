@@ -9,9 +9,11 @@ import simulation.evenement.Deplacer;
 import simulation.evenement.Direction;
 import simulation.evenement.Evenement;
 import simulation.evenement.Intervenir;
+import simulation.evenement.Remplir;
 import simulation.evenement.action.Action;
 import simulation.evenement.action.Deplacement;
 import simulation.evenement.action.Intervention;
+import simulation.evenement.action.Remplissage;
 
 public abstract class Robot {
 
@@ -19,6 +21,7 @@ public abstract class Robot {
 	private Case position;
 	private int vitesse;
 	private int reservoir;
+	private int sizeReservoir;
 	private int vitesseRemplissage; // temps pour remplir tout le reservoir en secondes
 	private int vitesseIntervention;
 	private EtatRobot etat;
@@ -37,6 +40,7 @@ public abstract class Robot {
 	private void setRobot(Case position, TypeRobot type) {
 		this.position = position;
 		this.reservoir = type.getSizeReservoir();
+		this.sizeReservoir = type.getSizeReservoir();
 		this.vitesseRemplissage = type.getRemplissage();
 		this.vitesseIntervention = type.getIntervention();
 		this.simulateur = null;
@@ -49,10 +53,17 @@ public abstract class Robot {
 			throw new RobotsPompiersException("Robot a deja une action. Pas possible de faire:" + evenement);
 		if (evenement instanceof Deplacer) {
 			addDeplacement((Deplacer) evenement);
+			return;
 		}
 		if (evenement instanceof Intervenir) {
 			addIntervention((Intervenir) evenement);
+			return;
 		}
+		if (evenement instanceof Remplir) {
+			addRemplissage((Remplir) evenement);
+			return;
+		}
+		throw new RobotsPompiersException("Action unconnu pour les robots.");
 	}
 
 	private void addDeplacement(Deplacer deplacer) {
@@ -74,6 +85,11 @@ public abstract class Robot {
 				intervenir.getIncendie());
 	}
 
+	private void addRemplissage(Remplir remplir) {
+		long dateFinal = remplir.getDateDebut() + (sizeReservoir - reservoir) / vitesseRemplissage;
+		this.actionCourrent = new Remplissage(remplir.getDateDebut(), dateFinal);
+	}
+
 	public EtatRobot getEtat() {
 		return etat;
 	}
@@ -83,7 +99,7 @@ public abstract class Robot {
 	}
 
 	public Carte getCarte() {
-		return simulateur.getDados().getCarte();
+		return simulateur.getCarte();
 	}
 
 	public Simulateur getSimulateur() {
@@ -139,23 +155,24 @@ public abstract class Robot {
 	public void traiterAction() {
 		if (actionCourrent != null) {
 			boolean fini = getSimulateur().getDateSimulation() == actionCourrent.getDateFinal();
-
+			if (actionCourrent instanceof Intervention) {
+				Intervention intervention = (Intervention) actionCourrent;
+				intervention.getIncendie()
+						.eteindreIncendie(reservoir > vitesseIntervention ? vitesseIntervention : reservoir);
+				deverserEau();
+			}
+			if (actionCourrent instanceof Remplissage) {
+				remplirReservoir();
+			}
 			if (fini) {
 				actionCourrent.finir(this);
 				actionCourrent = null;
 				etat = EtatRobot.ARRETE;
-			} else {
-				if (actionCourrent instanceof Intervention) {
-					Intervention intervention = (Intervention) actionCourrent;
-					intervention.getIncendie()
-							.eteindreIncendie(reservoir > vitesseIntervention ? vitesseIntervention : reservoir);
-					intervirUnUnite();
-				}
 			}
 		}
 	}
 
-	private void intervirUnUnite() {
+	private void deverserEau() {
 		if (!(this instanceof Pattes)) {
 			if (reservoir > vitesseIntervention) {
 				reservoir -= vitesseIntervention;
@@ -169,24 +186,21 @@ public abstract class Robot {
 		reservoir = 0;
 	}
 
-	public abstract int getVitesse(NatureTerrain terrain);
-
-	public void deverserEau(int vol) {
-		if (vol > this.reservoir)
-			this.reservoir = 0;
-		else
-			this.reservoir -= vol;
+	public void filler() {
+		reservoir = sizeReservoir;
 	}
 
-	public void remplirReservoir(TypeRobot type) {
-		if (reservoir + type.getRemplissage() >= type.getSizeReservoir()) {
-			reservoir = type.getSizeReservoir();
-		} else {
-			reservoir += type.getRemplissage();
+	public abstract int getVitesse(NatureTerrain terrain);
+
+	private void remplirReservoir() {
+		if (!(this instanceof Pattes)) {
+			if (reservoir + vitesseRemplissage >= sizeReservoir) {
+				reservoir = sizeReservoir;
+			} else {
+				reservoir += vitesseRemplissage;
+			}
 		}
 
 	}
-
-	public abstract void remplirReservoir();
 
 }

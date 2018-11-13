@@ -26,6 +26,10 @@ public class Incendie {
 		this.litres -= vol;
 	}
 
+	public void eteindre() {
+		litres = 0;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Incendie) {

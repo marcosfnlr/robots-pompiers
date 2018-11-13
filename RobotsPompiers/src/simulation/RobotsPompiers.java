@@ -7,6 +7,7 @@ import java.util.zip.DataFormatException;
 import gui.GUISimulator;
 import simulation.evenement.Deplacer;
 import simulation.evenement.Intervenir;
+import simulation.evenement.Remplir;
 
 public class RobotsPompiers {
 
@@ -24,20 +25,28 @@ public class RobotsPompiers {
 					donneesSimulation.getCarte().getNbLignes() * Simulateur.PIXELS_PAR_CASE, Color.WHITE);
 			Simulateur simulateur = new Simulateur(gui, donneesSimulation);
 			simulateur.ajouteEvenement(
-					new Deplacer(1, donneesSimulation.getRobots()[0], donneesSimulation.getCarte().getCase(3, 3)));
+					new Deplacer(1, simulateur.getRobots().get(1), simulateur.getCarte().getCase(5, 5)));
 			simulateur.ajouteEvenement(
-					new Deplacer(127, donneesSimulation.getRobots()[0], donneesSimulation.getCarte().getCase(3, 2)));
+					new Deplacer(127, simulateur.getRobots().get(1), simulateur.getCarte().getCase(5, 4)));
 			simulateur.ajouteEvenement(
-					new Deplacer(253, donneesSimulation.getRobots()[0], donneesSimulation.getCarte().getCase(3, 1)));
-			simulateur.ajouteEvenement(new Deplacer(253 + 126, donneesSimulation.getRobots()[0],
-					donneesSimulation.getCarte().getCase(2, 3)));
-			simulateur.ajouteEvenement(new Intervenir(253 + 252, donneesSimulation.getRobots()[0],
-					donneesSimulation.getIncendies().get(0)));
+					new Deplacer(253, simulateur.getRobots().get(1), simulateur.getCarte().getCase(6, 4)));
+			simulateur.ajouteEvenement(new Deplacer(253 + 126, simulateur.getRobots().get(1),
+					simulateur.getCarte().getCase(6, 5)));
+			simulateur.ajouteEvenement(
+					new Intervenir(505, simulateur.getRobots().get(1), simulateur.getIncendies().get(4)));
+			simulateur.ajouteEvenement(
+					new Deplacer(756, simulateur.getRobots().get(1), simulateur.getCarte().getCase(6, 4)));
+			simulateur.ajouteEvenement(new Remplir(756 + 126, simulateur.getRobots().get(1)));
+			simulateur.ajouteEvenement(
+					new Deplacer(1383, simulateur.getRobots().get(1), simulateur.getCarte().getCase(6, 5)));
+			simulateur.ajouteEvenement(
+					new Intervenir(1509, simulateur.getRobots().get(1), simulateur.getIncendies().get(4)));
+
 		} catch (FileNotFoundException e) {
 			System.out.println("fichier " + args[0] + " inconnu ou illisible");
 		} catch (DataFormatException e) {
 			System.out.println("\n\t**format du fichier " + args[0] + " invalide: " + e.getMessage());
-		} catch (Exception e) {
+		} catch (RobotsPompiersException e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}

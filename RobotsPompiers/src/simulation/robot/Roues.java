@@ -17,16 +17,6 @@ public class Roues extends Terrestre {
 		return this.getVitesse();
 	}
 
-	public void deverserEau(int vol) {
-		super.deverserEau(vol);
-	}
-
-	public void remplirReservoir() {
-		if (getCarte().isNearEau(getPosition())) {
-			remplirReservoir(TypeRobot.ROUES);
-		}
-	}
-
 	@Override
 	public String toString() {
 		return "Roues sur " + this.getPosition();

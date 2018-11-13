@@ -20,14 +20,6 @@ public class Pattes extends Terrestre {
 			return this.getVitesse();
 	}
 
-	public void deverserEau(int vol) {
-		super.deverserEau(vol);
-	}
-
-	public void remplirReservoir() {
-		
-	}
-
 	@Override
 	public String toString() {
 		return "Pattes sur " + this.getPosition();
