@@ -4,10 +4,12 @@ public class Incendie {
 
 	private Case position;
 	private int litres;
+	private boolean isCible;
 
 	public Incendie(Case position, int litres) {
 		this.position = position;
 		this.litres = litres;
+		this.isCible = false;
 	}
 
 	public Case getPosition() {
@@ -20,6 +22,18 @@ public class Incendie {
 
 	public void setLitres(int litres) {
 		this.litres = litres;
+	}
+
+	public boolean isCible() {
+		return isCible;
+	}
+
+	public void setCible(boolean isCible) {
+		this.isCible = isCible;
+	}
+
+	public void setPosition(Case position) {
+		this.position = position;
 	}
 
 	public void eteindreIncendie(int vol) {

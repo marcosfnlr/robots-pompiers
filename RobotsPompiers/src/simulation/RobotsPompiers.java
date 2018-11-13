@@ -15,46 +15,20 @@ public class RobotsPompiers {
 		}
 
 		try {
-
-			DonneesSimulation donneesSimulation = LecteurDonnees.lire(args[0]);
+			String file = args[0];
+			DonneesSimulation donneesSimulation = LecteurDonnees.lire(file);
 			GUISimulator gui = new GUISimulator(
 					donneesSimulation.getCarte().getNbColonnes() * Simulateur.PIXELS_PAR_CASE,
 					donneesSimulation.getCarte().getNbLignes() * Simulateur.PIXELS_PAR_CASE, Color.WHITE);
-			Simulateur simulateur = new Simulateur(gui, donneesSimulation);
-			// simulateur.ajouteEvenement(
-			// new Deplacer(1, simulateur.getRobots().get(1),
-			// simulateur.getCarte().getCase(5, 5)));
-			// simulateur.ajouteEvenement(
-			// new Deplacer(127, simulateur.getRobots().get(1),
-			// simulateur.getCarte().getCase(5, 4)));
-			// simulateur.ajouteEvenement(
-			// new Deplacer(253, simulateur.getRobots().get(1),
-			// simulateur.getCarte().getCase(6, 4)));
-			// simulateur.ajouteEvenement(new Deplacer(253 + 126,
-			// simulateur.getRobots().get(1),
-			// simulateur.getCarte().getCase(6, 5)));
-			// simulateur.ajouteEvenement(
-			// new Intervenir(505, simulateur.getRobots().get(1),
-			// simulateur.getIncendies().get(4)));
-			// simulateur.ajouteEvenement(
-			// new Deplacer(756, simulateur.getRobots().get(1),
-			// simulateur.getCarte().getCase(6, 4)));
-			// simulateur.ajouteEvenement(new Remplir(756 + 126,
-			// simulateur.getRobots().get(1)));
-			// simulateur.ajouteEvenement(
-			// new Deplacer(1383, simulateur.getRobots().get(1),
-			// simulateur.getCarte().getCase(6, 5)));
-			// simulateur.ajouteEvenement(
-			// new Intervenir(1509, simulateur.getRobots().get(1),
-			// simulateur.getIncendies().get(4)));
+			Simulateur simulateur = new Simulateur(gui, donneesSimulation, file);
+			simulateur.start();
 
 		} catch (FileNotFoundException e) {
 			System.out.println("fichier " + args[0] + " inconnu ou illisible");
 		} catch (DataFormatException e) {
 			System.out.println("\n\t**format du fichier " + args[0] + " invalide: " + e.getMessage());
 		} catch (RobotsPompiersException e) {
-			// TODO: handle exception
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 
 	}

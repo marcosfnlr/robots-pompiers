@@ -10,6 +10,7 @@ public class Remplissage extends Action {
 
 	public void finir(Robot robot) {
 		robot.filler();
+		robot.getSimulateur().getChefPompier().assignerIncendie(robot);
 	}
 
 }

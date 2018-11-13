@@ -6,18 +6,16 @@ import simulation.robot.EtatRobot;
 import simulation.robot.Robot;
 
 public class Deplacer extends Evenement {
-	private Robot robot;
 	private Case destination;
 
 	public Deplacer(long date, Robot robot, Case destination) {
-		super(date);
-		this.robot = robot;
+		super(date, robot);
 		this.destination = destination;
 	}
 
-	public void execute() throws RobotsPompiersException{
-		robot.setEtat(EtatRobot.DEPLACEMENT);
-		robot.addAction(this);
+	public void execute() throws RobotsPompiersException {
+		getRobot().setEtat(EtatRobot.DEPLACEMENT);
+		getRobot().addAction(this);
 	}
 
 	public Case getDestination() {
@@ -26,6 +24,6 @@ public class Deplacer extends Evenement {
 
 	@Override
 	public String toString() {
-		return "Deplacement du robot " + robot;
+		return "Deplacement du robot " + getRobot();
 	}
 }

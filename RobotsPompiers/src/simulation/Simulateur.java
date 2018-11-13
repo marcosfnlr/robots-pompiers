@@ -3,9 +3,11 @@ package simulation;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.zip.DataFormatException;
 
 import gui.GUISimulator;
 import gui.Rectangle;
@@ -21,36 +23,47 @@ public class Simulateur implements Simulable {
 
 	private GUISimulator gui;
 	private DonneesSimulation dados;
-	public static final int PIXELS_PAR_CASE = 40;
+	public static final int PIXELS_PAR_CASE = 50;
 	private List<Incendie> incendies;
 	private List<Robot> robots;
 	private long dateSimulation;
 	private List<Evenement> evenements;
 	private ChefPompier chefPompier;
+	private int maxSizeIncendie;
+	private String file;
 
-	public Simulateur(GUISimulator gui, DonneesSimulation dados) throws RobotsPompiersException {
-		this.dateSimulation = 0;
-		this.dados = dados;
-		this.gui = gui;
-		this.chefPompier = new ChefPompier(this);
-		gui.setSimulable(this);
-		for (Robot r : dados.getRobots()) {
-			r.setSimulateur(this);
-		}
-		setDados();
-
+	public Simulateur(GUISimulator gui, DonneesSimulation dados, String file) throws RobotsPompiersException {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		if (screenSize.getHeight() < gui.getPanelHeight() || screenSize.getWidth() < gui.getPanelWidth()) {
 			throw new RobotsPompiersException("Taille de carte pas valide."); // TODO change type
 		}
-		chefPompier.assignerRobotsIncendie();
-		draw();
+		this.gui = gui;
+		this.dados = dados;
+		this.file = file;
+		this.chefPompier = new ChefPompier(this);
+		gui.setSimulable(this);
+		setDados();
 	}
 
 	private void setDados() {
+		this.dateSimulation = 0;
+		this.maxSizeIncendie = 0;
 		this.evenements = new ArrayList<Evenement>();
 		robots = new ArrayList<Robot>(Arrays.asList(dados.getRobots()));
 		incendies = new ArrayList<Incendie>(Arrays.asList(dados.getIncendies()));
+	}
+
+	public void start() {
+		for (Robot r : robots) {
+			r.setSimulateur(this);
+			chefPompier.assignerIncendie(r);
+		}
+		for (Incendie i : incendies) {
+			if (i.getLitres() > maxSizeIncendie) {
+				maxSizeIncendie = i.getLitres();
+			}
+		}
+		draw();
 	}
 
 	public ChefPompier getChefPompier() {
@@ -105,37 +118,68 @@ public class Simulateur implements Simulable {
 		checkIncendies();
 		if (!simulationTerminee()) {
 			incrementeDate();
-			for (Robot r : dados.getRobots()) {
+			for (Robot r : robots) {
 				r.traiterAction();
 			}
 			executerEvenements();
+			checkRobotsAuRepos();
 			draw();
 		}
 	}
 
+	private void checkRobotsAuRepos() {
+		for (Robot r : robots) {
+			if (r.getEtat() == EtatRobot.ARRETE && !evenementSuivant(r)) {
+				if (r.getReservoir() == 0) {
+					chefPompier.assignerRemplissage(r);
+				} else {
+					chefPompier.assignerIncendie(r);
+				}
+			}
+		}
+
+	}
+
+	private boolean evenementSuivant(Robot r) {
+		for (Evenement e : evenements) {
+			if (e.getRobot().equals(r) && e.getDateDebut() == dateSimulation + 1) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public void restart() {
-		setDados();
-		draw();
+		try {
+			dados = LecteurDonnees.lire(file);
+			setDados();
+			start();
+		} catch (FileNotFoundException e) {
+			System.out.println("fichier " + file + " inconnu ou illisible");
+		} catch (DataFormatException e) {
+			System.out.println("\n\t**format du fichier " + file + " invalide: " + e.getMessage());
+		}
 	}
 
 	private void draw() {
 		gui.reset();
-		for (int lig = 0; lig < dados.getCarte().getNbLignes(); lig++) {
-			for (int col = 0; col < dados.getCarte().getNbColonnes(); col++) {
+		for (int lig = 0; lig < getCarte().getNbLignes(); lig++) {
+			for (int col = 0; col < getCarte().getNbColonnes(); col++) {
 				gui.addGraphicalElement(new Rectangle(PIXELS_PAR_CASE / 2 + col * PIXELS_PAR_CASE,
 						PIXELS_PAR_CASE / 2 + lig * PIXELS_PAR_CASE, Color.BLACK,
 						dados.getCarte().getCase(lig, col).getNature().getCouleur().getColor(), PIXELS_PAR_CASE));
 			}
 		}
 		for (Incendie i : incendies) {
+			int size = (int) ((PIXELS_PAR_CASE * 0.8) * (1.0 * i.getLitres() / maxSizeIncendie));
 			gui.addGraphicalElement(new Rectangle(i.getPosition().getColonne() * PIXELS_PAR_CASE + PIXELS_PAR_CASE / 2,
-					i.getPosition().getLigne() * PIXELS_PAR_CASE + PIXELS_PAR_CASE / 2, Color.WHITE,
-					Couleur.RED.getColor(), PIXELS_PAR_CASE / 2));
+					i.getPosition().getLigne() * PIXELS_PAR_CASE + PIXELS_PAR_CASE / 2, Color.ORANGE,
+					Couleur.RED.getColor(), size > 0 ? size : 1));
 		}
 		for (Robot r : robots) {
 			gui.addGraphicalElement(new Rectangle(r.getX(), r.getY(),
-					r.getEtat() == EtatRobot.ARRETE ? Color.WHITE : Color.BLACK, Color.GRAY, PIXELS_PAR_CASE / 4));
+					r.getEtat() == EtatRobot.ARRETE ? Color.WHITE : Color.BLACK, Color.GRAY, PIXELS_PAR_CASE / 5));
 		}
 	}
 

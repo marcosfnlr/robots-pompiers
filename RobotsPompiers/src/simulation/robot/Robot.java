@@ -165,9 +165,9 @@ public abstract class Robot {
 				remplirReservoir();
 			}
 			if (fini) {
+				etat = EtatRobot.ARRETE;
 				actionCourrent.finir(this);
 				actionCourrent = null;
-				etat = EtatRobot.ARRETE;
 			}
 		}
 	}

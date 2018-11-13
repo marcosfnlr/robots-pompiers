@@ -33,9 +33,16 @@ public class Intervention extends Action {
 	public void finir(Robot robot) {
 		if (finIncendie) {
 			incendie.eteindre();
+		} else {
+			incendie.setCible(false);
 		}
-		if (repositoireVide && !(robot instanceof Pattes)) {
-			robot.vider();
+		if (repositoireVide) {
+			if (!(robot instanceof Pattes)) {
+				robot.vider();
+			}
+			robot.getSimulateur().getChefPompier().assignerRemplissage(robot);
+		} else {
+			robot.getSimulateur().getChefPompier().assignerIncendie(robot);
 		}
 	}
 

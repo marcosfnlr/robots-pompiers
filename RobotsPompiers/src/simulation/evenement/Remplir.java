@@ -5,15 +5,13 @@ import simulation.robot.EtatRobot;
 import simulation.robot.Robot;
 
 public class Remplir extends Evenement {
-	private Robot robot;
 
 	public Remplir(long date, Robot robot) {
-		super(date);
-		this.robot = robot;
+		super(date, robot);
 	}
 
 	public void execute() throws RobotsPompiersException {
-		robot.setEtat(EtatRobot.REMPLISSAGE);
-		robot.addAction(this);
+		getRobot().setEtat(EtatRobot.REMPLISSAGE);
+		getRobot().addAction(this);
 	}
 }
