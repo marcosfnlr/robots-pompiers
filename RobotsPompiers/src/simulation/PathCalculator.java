@@ -36,7 +36,7 @@ public class PathCalculator {
 	 */
 	public static PairListCaseDouble calculate(Carte carte, Robot robot, Case dest) {
 
-		PathCalculator pathCalculator = new PathCalculator(carte, robot, dest);
+		PathCalculator pathCalculator = new PathCalculator(carte, robot);
 
 		HashMap<Case, Double> dist = new HashMap<Case, Double>();
 
@@ -105,12 +105,10 @@ public class PathCalculator {
 
 	private Carte carte;
 	private Robot robot;
-	private Case dest;
 
-	private PathCalculator(Carte carte, Robot robot, Case dest) {
+	private PathCalculator(Carte carte, Robot robot) {
 		this.carte = carte;
 		this.robot = robot;
-		this.dest = dest;
 	}
 
 	private double WeightCalculator(Case position) {
