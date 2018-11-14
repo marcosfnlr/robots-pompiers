@@ -6,6 +6,9 @@ import java.util.zip.DataFormatException;
 
 import gui.GUISimulator;
 
+/**
+ * Class with the main methode.
+ */
 public class RobotsPompiers {
 
 	public static void main(String[] args) throws FileNotFoundException, DataFormatException {

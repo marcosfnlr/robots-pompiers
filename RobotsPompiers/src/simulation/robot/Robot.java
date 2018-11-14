@@ -32,6 +32,16 @@ public abstract class Robot {
 		this.vitesse = type.getVitesse();
 	}
 
+	/**
+	 * Crée un robot avec une vitesse different de la normale
+	 * 
+	 * @param position
+	 *            case dans lequel se trouve le robot
+	 * @param type
+	 *            type du robot
+	 * @param vitesse
+	 *            vitesse standard du robot
+	 */
 	public Robot(Case position, TypeRobot type, int vitesse) {
 		setRobot(position, type);
 		this.vitesse = vitesse;
@@ -48,9 +58,17 @@ public abstract class Robot {
 		this.etat = EtatRobot.ARRETE;
 	}
 
+	/**
+	 * Gives an action to the robot.
+	 * 
+	 * @param evenement
+	 * @throws RobotsPompiersException
+	 *             If the robot is already doing something
+	 */
 	public void addAction(Evenement evenement) throws RobotsPompiersException {
-		if (this.actionCourrent != null)
+		if (this.actionCourrent != null) {
 			throw new RobotsPompiersException("Robot a deja une action. Pas possible de faire:" + evenement);
+		}
 		if (evenement instanceof Deplacer) {
 			addDeplacement((Deplacer) evenement);
 			return;
@@ -134,6 +152,11 @@ public abstract class Robot {
 		return this.vitesse;
 	}
 
+	/**
+	 * Gets the current maps horizontal position
+	 * 
+	 * @return x map coordinate
+	 */
 	public int getX() {
 		int x = getPosition().getColonne() * Simulateur.PIXELS_PAR_CASE + Simulateur.PIXELS_PAR_CASE / 2;
 		if (actionCourrent != null && actionCourrent instanceof Deplacement) {
@@ -143,6 +166,11 @@ public abstract class Robot {
 		return x;
 	}
 
+	/**
+	 * Gets the current maps vertical position
+	 * 
+	 * @return y map coordinate
+	 */
 	public int getY() {
 		int y = getPosition().getLigne() * Simulateur.PIXELS_PAR_CASE + Simulateur.PIXELS_PAR_CASE / 2;
 		if (actionCourrent != null && actionCourrent instanceof Deplacement) {
@@ -152,6 +180,9 @@ public abstract class Robot {
 		return y;
 	}
 
+	/**
+	 * Execute les bonnes tâches d'après la action courrant
+	 */
 	public void traiterAction() {
 		if (actionCourrent != null) {
 			boolean fini = getSimulateur().getDateSimulation() == actionCourrent.getDateFinal();

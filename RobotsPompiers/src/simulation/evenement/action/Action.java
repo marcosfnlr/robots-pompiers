@@ -9,6 +9,9 @@ public abstract class Action {
 
 	public Action(long dateInicial, long dateFinal) {
 		this.dateInicial = dateInicial;
+		if (dateFinal == dateInicial) {
+			dateFinal++;
+		}
 		this.dateFinal = dateFinal;
 	}
 
@@ -20,6 +23,11 @@ public abstract class Action {
 		return dateInicial;
 	}
 
+	/**
+	 * Faire les choses qu'il faut executer quand l'action est fini
+	 * 
+	 * @param robot
+	 */
 	public abstract void finir(Robot robot);
 
 }

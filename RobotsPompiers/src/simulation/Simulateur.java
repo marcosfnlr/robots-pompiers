@@ -53,6 +53,9 @@ public class Simulateur implements Simulable {
 		incendies = new ArrayList<Incendie>(Arrays.asList(dados.getIncendies()));
 	}
 
+	/**
+	 * Starts the simulator.
+	 */
 	public void start() {
 		for (Robot r : robots) {
 			r.setSimulateur(this);
@@ -86,6 +89,10 @@ public class Simulateur implements Simulable {
 		return this.dateSimulation;
 	}
 
+	/**
+	 * Executes all events in the list of evenements that starts in the current
+	 * date.
+	 */
 	private void executerEvenements() {
 		for (Evenement e : evenements) {
 			if (e.getDateDebut() == dateSimulation) {
@@ -99,6 +106,9 @@ public class Simulateur implements Simulable {
 		}
 	}
 
+	/**
+	 * Checks if the fire has been put out. If so, then removes it from the list.
+	 */
 	private void checkIncendies() {
 		if (!incendies.isEmpty()) {
 			ArrayList<Integer> inds = new ArrayList<Integer>();
@@ -127,6 +137,10 @@ public class Simulateur implements Simulable {
 		}
 	}
 
+	/**
+	 * Checks what are the states of the robots and send them to put out a fire or
+	 * fill the reservatory if they are lazy.
+	 */
 	private void checkRobotsAuRepos() {
 		for (Robot r : robots) {
 			if (r.getEtat() == EtatRobot.ARRETE && !evenementSuivant(r)) {
@@ -140,9 +154,15 @@ public class Simulateur implements Simulable {
 
 	}
 
+	/**
+	 * Vérifie si le robot a quelque action à faire dans l'avenir.
+	 * 
+	 * @param r
+	 * @return
+	 */
 	private boolean evenementSuivant(Robot r) {
 		for (Evenement e : evenements) {
-			if (e.getRobot().equals(r) && e.getDateDebut() == dateSimulation + 1) {
+			if (e.getRobot().equals(r) && e.getDateDebut() >= dateSimulation + 1) {
 				return true;
 			}
 		}
