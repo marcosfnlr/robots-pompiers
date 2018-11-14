@@ -17,4 +17,9 @@ public class PairDoubleCase{
 	public Case getValue(){
 		return this.value;
 	}
+	
+	@Override
+	public String toString() {
+		return value.toString() + key;
+	}
 }

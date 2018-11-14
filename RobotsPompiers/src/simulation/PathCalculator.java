@@ -1,7 +1,11 @@
 package simulation;
 import simulation.carte.Carte;
+import simulation.robot.Chenilles;
+import simulation.robot.Pattes;
 import simulation.robot.Robot;
+import simulation.robot.Roues;
 import simulation.carte.Case;
+import simulation.carte.NatureTerrain;
 import simulation.evenement.Direction;
 import java.util.HashMap;
 import java.util.Comparator;
@@ -70,7 +74,7 @@ public class PathCalculator {
 				Case v = carte.getVoisin(currentCase, dir);
 				if(v == null) continue;
 				Double peso = pathCalculator.WeightCalculator(v);
-				if(dist.get(currentCase) - peso == dist.get(v)){
+				if(Math.abs(dist.get(currentCase) - peso - dist.get(v)) < 0.00000000000000001){
 					currentCase = v;
 					break;
 				}
@@ -94,6 +98,13 @@ public class PathCalculator {
     }
 
     private double WeightCalculator(Case position){
+    	if(this.robot instanceof Roues && position.getNature() != NatureTerrain.TERRAIN_LIBRE &&
+    			position.getNature() != NatureTerrain.HABITAT ||
+    			this.robot instanceof Chenilles && (position.getNature() == NatureTerrain.EAU ||
+    					position.getNature() == NatureTerrain.ROCHE) ||
+    			this.robot instanceof Pattes && position.getNature() == NatureTerrain.EAU)
+    		
+    		return Double.MAX_VALUE;
     	return (double)this.robot.getVitesse(position.getNature())/this.carte.getTailleCases();
     }
 }
